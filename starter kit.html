@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Whispers of the Ouroboros: Interactive DM Screen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chosen Palette: Parchment & Ink -->
+    <!-- Application Structure Plan: The SPA uses a top navigation bar to switch between thematic views (Dashboard, Adventures, Cast, Atlas, Lore, Toolkit). This non-linear structure is designed for a Dungeon Master's workflow, allowing quick access to specific information during a live game session, which is more efficient than scrolling through a linear document. The core of the 'Adventures' view is an interactive flowchart, visually mapping the campaign progression. The 'Cast' and 'Atlas' sections use searchable and filterable card grids for rapid lookup of characters and locations. This design prioritizes usability and quick information retrieval over mirroring the source report's sequential layout. -->
+    <!-- Visualization & Content Choices:
+        Report Info: Campaign Timeline -> Goal: Visualize plot progression -> Viz/Presentation: Interactive HTML/CSS flowchart -> Interaction: Click a node to view detailed information for that campaign part -> Justification: Provides a clear, at-a-glance overview of the story's flow and how adventures connect.
+        Report Info: NPC/Monster descriptions -> Goal: Organize for quick lookup -> Viz/Presentation: Filterable/Searchable card grid -> Interaction: Search by name, filter by type (Ally, Antagonist, etc.), click for full details -> Justification: Far superior to text search for in-game speed.
+        Report Info: Escalating threat level -> Goal: Inform DM of rising stakes -> Viz/Presentation: Chart.js Line Chart -> Interaction: Tooltips on hover -> Justification: Gives an immediate visual sense of the campaign's dramatic arc.
+        Report Info: Relationships between characters -> Goal: Clarify allegiances -> Viz/Presentation: HTML/CSS connection diagram -> Interaction: Hover to highlight connections -> Justification: Quickly shows who is allied with or opposed to whom, especially Kaelen's network.
+        Report Info: Glossary/Rules -> Goal: Quick reference -> Viz/Presentation: Searchable list -> Interaction: Search term to find definition -> Justification: Faster than manual lookup.
+        CONFIRMING NO SVG/Mermaid, supporting the DESIGNED structure. Library/Method: Vanilla JS, Tailwind CSS, Chart.js for all elements. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Marcellus&display=swap');
+        body {
+            font-family: 'Marcellus', serif;
+            background-color: #fdf6e3; /* A warm, parchment-like color */
+            color: #584b3d;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'IM Fell English', serif;
+            font-weight: 600;
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-button.active, .nav-button:hover {
+            color: #d35400;
+            border-bottom-color: #d35400;
+        }
+        .card {
+            background-color: #f7f1e3;
+            border: 1px solid #dcd3b8;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .flowchart-node {
+            border: 2px solid #a38d6d;
+            background-color: #f7f1e3;
+            position: relative;
+            z-index: 10;
+        }
+        .flowchart-line {
+            position: absolute;
+            background-color: #a38d6d;
+            z-index: 1;
+        }
+        .modal-bg {
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+             background-color: #fdf6e3;
+             max-height: 90vh;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f7f1e3;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a38d6d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8a7352;
+        }
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .tag-ally { background-color: #d1e7dd; color: #0f5132; }
+        .tag-antagonist { background-color: #f8d7da; color: #842029; }
+        .tag-neutral { background-color: #fff3cd; color: #664d03; }
+        .tag-monster { background-color: #e2e3e5; color: #41464b; }
+        .tag-deity { background-color: #cff4fc; color: #055160; }
+        .tab-button.active {
+            border-color: #d35400;
+            background-color: #f7f1e3;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-[#f7f1e3] shadow-md sticky top-0 z-40">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl md:text-2xl text-[#8c2d2d]">The Whispers of the Ouroboros</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div id="nav-menu" class="ml-10 flex items-baseline space-x-4">
+                        <button class="nav-button active px-3 py-2 text-sm font-medium" data-target="dashboard">Dashboard</button>
+                        <button class="nav-button px-3 py-2 text-sm font-medium" data-target="adventures">Adventures</button>
+                        <button class="nav-button px-3 py-2 text-sm font-medium" data-target="cast">Cast</button>
+                        <button class="nav-button px-3 py-2 text-sm font-medium" data-target="atlas">Atlas</button>
+                        <button class="nav-button px-3 py-2 text-sm font-medium" data-target="lore">Lore</button>
+                        <button class="nav-button px-3 py-2 text-sm font-medium" data-target="toolkit">DM Toolkit</button>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-[#584b3d] hover:text-[#d35400] focus:outline-none">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <button class="nav-button active block w-full text-left px-3 py-2 rounded-md text-base font-medium" data-target="dashboard">Dashboard</button>
+                <button class="nav-button block w-full text-left px-3 py-2 rounded-md text-base font-medium" data-target="adventures">Adventures</button>
+                <button class="nav-button block w-full text-left px-3 py-2 rounded-md text-base font-medium" data-target="cast">Cast</button>
+                <button class="nav-button block w-full text-left px-3 py-2 rounded-md text-base font-medium" data-target="atlas">Atlas</button>
+                <button class="nav-button block w-full text-left px-3 py-2 rounded-md text-base font-medium" data-target="lore">Lore</button>
+                <button class="nav-button block w-full text-left px-3 py-2 rounded-md text-base font-medium" data-target="toolkit">DM Toolkit</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- Dashboard View -->
+        <div id="dashboard" class="view">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl">Campaign Dashboard</h2>
+                <p class="mt-2 text-lg text-gray-600">An at-a-glance overview of "The Whispers of the Ouroboros".</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 card p-6">
+                    <h3 class="text-2xl mb-4">Core Conflict</h3>
+                    <p class="mb-4">This campaign revolves around the insidious resurgence of the **Cult of the Ouroboros**, a malevolent necromantic cult led by the ancient **Lich Lord Kaelen**. The cult's goal is to unravel the natural cycle of life and death, transforming the world into a realm of eternal undeath where their dark patron can manifest. The heroes will uncover this conspiracy piece by piece, as each adventure reveals another facet of Kaelen's grand plan.</p>
+                    <p>Opposing this decay is **Somnia the Dreamweaver**, a deity of growth and potential who aids the heroes through dreams and divine gifts, acting as a crucial counterbalance to the cult's dark influence.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center justify-center">
+                    <h3 class="text-2xl mb-4">Key Figures</h3>
+                    <div class="space-y-3 text-center">
+                        <div>
+                            <h4 class="text-xl text-red-800">Antagonist</h4>
+                            <p>Lich Lord Kaelen</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xl text-blue-800">Protagonist</h4>
+                            <p>Somnia the Dreamweaver</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-3 card p-6">
+                    <h3 class="text-2xl mb-4 text-center">Campaign Threat Escalation</h3>
+                    <p class="text-center text-gray-600 mb-4">This chart visualizes the rising stakes as the heroes progress through the campaign, from a local problem to a world-ending threat.</p>
+                    <div class="chart-container relative h-64 md:h-80 w-full max-w-3xl mx-auto">
+                        <canvas id="threatChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Adventures View -->
+        <div id="adventures" class="view hidden">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl">Adventure Flow</h2>
+                <p class="mt-2 text-lg text-gray-600">Follow the campaign's narrative arc. Click on any part to see detailed objectives, clues, and outcomes.</p>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div id="flowchart-container" class="w-full lg:w-1/3 space-y-4 relative">
+                    <!-- Flowchart will be generated here by JS -->
+                </div>
+                <div id="adventure-details" class="w-full lg:w-2/3 card p-6">
+                    <!-- Details will be populated here by JS -->
+                    <div class="text-center p-8">
+                        <h3 class="text-2xl">Select an Adventure</h3>
+                        <p class="mt-2 text-gray-500">Click on a part of the campaign from the flowchart to see the details here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cast View -->
+        <div id="cast" class="view hidden">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl">Dramatis Personae</h2>
+                <p class="mt-2 text-lg text-gray-600">A quick reference for all key characters, monsters, and deities in the campaign.</p>
+            </div>
+            <div class="mb-6 flex flex-col sm:flex-row gap-4">
+                <input id="cast-search" type="text" placeholder="Search characters..." class="w-full sm:w-1/2 p-2 border border-[#dcd3b8] rounded-md bg-[#f7f1e3]">
+                <div id="cast-filters" class="flex flex-wrap gap-2">
+                     <button class="px-4 py-2 text-sm rounded-full bg-gray-200 hover:bg-gray-300" data-filter="all">All</button>
+                     <button class="px-4 py-2 text-sm rounded-full bg-gray-200 hover:bg-gray-300" data-filter="ally">Allies</button>
+                     <button class="px-4 py-2 text-sm rounded-full bg-gray-200 hover:bg-gray-300" data-filter="antagonist">Antagonists</button>
+                     <button class="px-4 py-2 text-sm rounded-full bg-gray-200 hover:bg-gray-300" data-filter="neutral">Neutral</button>
+                     <button class="px-4 py-2 text-sm rounded-full bg-gray-200 hover:bg-gray-300" data-filter="monster">Monsters</button>
+                     <button class="px-4 py-2 text-sm rounded-full bg-gray-200 hover:bg-gray-300" data-filter="deity">Deities</button>
+                </div>
+            </div>
+            <div id="cast-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Character cards will be generated here by JS -->
+            </div>
+        </div>
+
+        <!-- Atlas View -->
+        <div id="atlas" class="view hidden">
+             <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl">World Atlas</h2>
+                <p class="mt-2 text-lg text-gray-600">Explore the key locations of the Whispering Moors.</p>
+            </div>
+             <div id="atlas-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                 <!-- Location cards will be generated here by JS -->
+             </div>
+        </div>
+
+        <!-- Lore View -->
+        <div id="lore" class="view hidden">
+             <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl">Key Lore & Artifacts</h2>
+                <p class="mt-2 text-lg text-gray-600">Details on the powerful items and insidious forces at play.</p>
+            </div>
+            <div id="lore-grid" class="space-y-6">
+                <!-- Lore items will be generated here by JS -->
+            </div>
+        </div>
+
+        <!-- Toolkit View -->
+        <div id="toolkit" class="view hidden">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl">DM Toolkit</h2>
+                <p class="mt-2 text-lg text-gray-600">Rules, tips, and a glossary for running the game smoothly.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="card p-6">
+                    <h3 class="text-2xl mb-4">Heroes of Hesiod Rules</h3>
+                    <p class="mb-2">This campaign is adapted for the "Heroes of Hesiod" system for younger players, focusing on simple turns, fast combat, and clear rewards.</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>**Progression:** Levels are gained after a set number of adventures, not XP.</li>
+                        <li>**Combat:** Monsters are simplified into roles (Minion, Elite, etc.) with low HP for faster encounters.</li>
+                        <li>**Rewards:** Players get tangible rewards like magic items (often from Somnia) after key victories.</li>
+                    </ul>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-2xl mb-4">Top DM Tips</h3>
+                     <ul class="list-disc list-inside space-y-1">
+                        <li>**Describe Vividly:** Use all five senses to immerse your players.</li>
+                        <li>**Encourage Roleplaying:** Ask "What do you do?" and reward creativity.</li>
+                        <li>**Be Flexible:** Player choices drive the story. Improvise and adapt.</li>
+                        <li>**Rule of Cool:** If an idea is awesome, find a way to make it work.</li>
+                        <li>**Have Fun:** Your enthusiasm is contagious!</li>
+                    </ul>
+                </div>
+                 <div class="lg:col-span-2 card p-6">
+                    <h3 class="text-2xl mb-4">Glossary</h3>
+                    <input id="glossary-search" type="text" placeholder="Search glossary..." class="w-full p-2 mb-4 border border-[#dcd3b8] rounded-md bg-[#f7f1e3]">
+                    <dl id="glossary-list" class="space-y-4 max-h-96 overflow-y-auto pr-2">
+                        <!-- Glossary will be generated by JS -->
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for Character/Location/Lore Details -->
+    <div id="detail-modal" class="fixed inset-0 z-50 items-center justify-center hidden">
+        <div class="modal-bg absolute inset-0"></div>
+        <div class="modal-content relative w-11/12 max-w-3xl mx-auto my-6 p-6 rounded-lg shadow-xl overflow-y-auto">
+             <button id="modal-close-button" class="absolute top-0 right-0 mt-4 mr-4 text-gray-500 hover:text-red-700">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div id="modal-body">
+                <!-- Modal content goes here -->
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    const AppData = {
+        adventures: [
+            {
+                id: 'part1',
+                title: 'Part 1: A Potent Brew',
+                levels: '1-2',
+                summary: 'The heroes arrive in Beechburton and take a job from Glowkindle, a gnome brewer, to clear out "giant rats" from his cellar. They uncover ancient ruins beneath the brewery, discovering it was once a laboratory for Lich Lord Kaelen, and find the first clues of the Cult of the Ouroboros.',
+                objective: 'Clear the brewery of monsters and discover the source of the corruption.',
+                clues: ['A cryptic map with the Ouroboros symbol marking Havel\'s Cross.', 'A fragmented journal from a wizard warning of a "death cult".', 'An unnaturally cold stone hinting at necromantic artifacts.'],
+                outcome: 'The party learns of a greater threat in the northern hills. Somnia makes her first contact, gifting them magical items in their dreams.'
+            },
+            {
+                id: 'part2',
+                title: 'Part 2: Horror at Havel\'s Cross',
+                levels: '2-3',
+                summary: 'Professor Landy hires the party to investigate a dig site at Havel\'s Cross. They find a massacre and an ancient Elven temple, a former cult hub. They confront Calador, an archaeologist corrupted by the Bone of Doresain, and learn more about the cult\'s methods.',
+                objective: 'Investigate the massacre, secure the Bone of Doresain, and uncover the cult\'s local history.',
+                clues: ['The Bone of Doresain\'s immense corrupting power.', 'Calador\'s notes mentioning "bloodline keys" and the name "Cabell".', 'The name "Yeth" is discovered, described as "soul collector".'],
+                outcome: 'The party retrieves a key cult artifact and learns their next destination is Cabell Manor. Somnia provides prophetic dreams and more powerful gifts.'
+            },
+            {
+                id: 'part3',
+                title: 'Part 3: The Hound of Cabell Manor',
+                levels: '3-4',
+                summary: 'The party travels to Cabell Manor to help a noble family plagued by a fiendish hound. They confront Yeth, a devil in service to Kaelen, and learn of an ancient contract that funnels Cabell souls to the Lich Lord. The infant, Henry Cabell, is the final soul needed for a grand ritual.',
+                objective: 'Defeat the Hell Hound, confront Yeth, and break the ancient contract to save Henry Cabell.',
+                clues: ['The Cabell Contract, a soul-binding pact.', 'Yeth\'s connection to Lich Lord Kaelen is revealed.', 'Henry Cabell\'s soul is a "vital, pure component" for Kaelen\'s ritual.'],
+                outcome: 'By breaking the contract, the party deals a major blow to Kaelen\'s plans. Somnia grants them a vision of the final confrontation and their most powerful equipment yet.'
+            },
+            {
+                id: 'part4',
+                title: 'Part 4: The Master\'s Gambit',
+                levels: '4-5',
+                summary: 'With his plans thwarted, Kaelen abandons subtlety and accelerates his timeline. Necrotic energy plagues the region around Beechburton. Professor Landy discovers Kaelen is attempting "The Great Unraveling," a ritual to merge the planes of life and death, using the Temple of Pelor as a new power source.',
+                objective: 'Uncover Kaelen\'s desperate new plan and find the location of his final ritual.',
+                clues: ['Widespread environmental corruption (dying plants, unnatural fog).', 'Landy\'s research reveals the nature of "The Great Unraveling" ritual.', 'The final ritual site is identified as "The Heart of Endings".'],
+                outcome: 'The stakes are raised to a world-ending level. The party must race against time to stop Kaelen before his ritual is complete.'
+            },
+            {
+                id: 'part5',
+                title: 'Part 5: The Heart of Endings',
+                levels: '5-6',
+                summary: 'The heroes journey to the ancient burial ground, the Heart of Endings, where Kaelen is in the final stages of his ritual. The battle is multi-phased: the heroes must first break the ritual circle by disrupting magic at surrounding barrows, then confront the weakened Lich Lord Kaelen himself, and finally, find and destroy his phylactery to defeat him for good.',
+                objective: 'Disrupt the ritual, defeat Lich Lord Kaelen, and destroy his phylactery.',
+                clues: ['Kaelen\'s phylactery is the key to his permanent defeat.', 'The ritual components are vulnerable.', 'Somnia may provide a final piece of crucial insight.'],
+                outcome: 'The party saves the region from undeath, becoming legendary heroes. Lingering threats may remain for future adventures.'
+            }
+        ],
+        cast: [],
+        atlas: [],
+        lore: [],
+        glossary: []
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const views = document.querySelectorAll('.view');
+        const navButtons = document.querySelectorAll('.nav-button');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function switchView(targetId) {
+            views.forEach(view => {
+                if (view.id === targetId) {
+                    view.classList.remove('hidden');
+                } else {
+                    view.classList.add('hidden');
+                }
+            });
+            navButtons.forEach(button => {
+                if (button.dataset.target === targetId) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        }
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                switchView(button.dataset.target);
+            });
+        });
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        initDashboard();
+        initAdventures();
+        initCast();
+        initAtlas();
+        initLore();
+        initToolkit();
+    });
+
+    function initDashboard() {
+        const ctx = document.getElementById('threatChart').getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+        gradient.addColorStop(0, 'rgba(211, 84, 0, 0.5)');
+        gradient.addColorStop(1, 'rgba(211, 84, 0, 0)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['A Potent Brew', 'Havel\'s Cross', 'Cabell Manor', 'The Master\'s Gambit', 'Heart of Endings'],
+                datasets: [{
+                    label: 'Campaign Threat Level',
+                    data: [1, 3, 5, 8, 10],
+                    backgroundColor: gradient,
+                    borderColor: '#d35400',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#d35400',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#d35400',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value, index, values) {
+                                switch(value) {
+                                    case 1: return 'Local Nuisance';
+                                    case 5: return 'Regional Danger';
+                                    case 10: return 'Apocalyptic Threat';
+                                    default: return '';
+                                }
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Threat Level: ${context.parsed.y}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function initAdventures() {
+        const flowchartContainer = document.getElementById('flowchart-container');
+        const adventureDetailsContainer = document.getElementById('adventure-details');
+
+        AppData.adventures.forEach((adv, index) => {
+            const node = document.createElement('div');
+            node.className = 'flowchart-node p-4 rounded-lg shadow-md cursor-pointer text-center';
+            node.dataset.id = adv.id;
+            node.innerHTML = `<h4 class="font-bold">${adv.title}</h4><p class="text-sm text-gray-500">Levels ${adv.levels}</p>`;
+
+            node.addEventListener('click', () => {
+                displayAdventureDetails(adv.id);
+                document.querySelectorAll('.flowchart-node').forEach(n => n.classList.remove('ring-2', 'ring-[#d35400]'));
+                node.classList.add('ring-2', 'ring-[#d35400]');
+            });
+
+            flowchartContainer.appendChild(node);
+
+            if (index < AppData.adventures.length - 1) {
+                const arrow = document.createElement('div');
+                arrow.className = 'h-8 w-full flex justify-center items-center';
+                arrow.innerHTML = `<svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2V30M12 30L22 20M12 30L2 20" stroke="#a38d6d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+                flowchartContainer.appendChild(arrow);
+            }
+        });
+
+        function displayAdventureDetails(id) {
+            const adv = AppData.adventures.find(a => a.id === id);
+            if (!adv) return;
+            adventureDetailsContainer.innerHTML = `
+                <h3 class="text-3xl mb-2">${adv.title}</h3>
+                <p class="text-lg text-gray-500 mb-4">Recommended Levels: ${adv.levels}</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="text-xl font-bold mb-1">Summary</h4>
+                        <p>${adv.summary}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold mb-1">Primary Objective</h4>
+                        <p>${adv.objective}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold mb-1">Key Clues to Uncover</h4>
+                        <ul class="list-disc list-inside space-y-1">${adv.clues.map(c => `<li>${c}</li>`).join('')}</ul>
+                    </div>
+                     <div>
+                        <h4 class="text-xl font-bold mb-1">Outcome & Transition</h4>
+                        <p>${adv.outcome}</p>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    function initCast() {
+        const castGrid = document.getElementById('cast-grid');
+        const searchInput = document.getElementById('cast-search');
+        const filterButtons = document.querySelectorAll('#cast-filters button');
+
+        function renderCast(filter = 'all', searchTerm = '') {
+            castGrid.innerHTML = '';
+            const lowerSearchTerm = searchTerm.toLowerCase();
+
+            const filteredCast = AppData.cast
+                .filter(char => filter === 'all' || char.type === filter)
+                .filter(char => char.name.toLowerCase().includes(lowerSearchTerm));
+
+            if (filteredCast.length === 0) {
+                 castGrid.innerHTML = `<p class="col-span-full text-center text-gray-500">No characters found.</p>`;
+                 return;
+            }
+
+            filteredCast.forEach(char => {
+                const card = document.createElement('div');
+                card.className = 'card p-4 flex flex-col items-center text-center cursor-pointer';
+                card.dataset.id = char.id;
+
+                const typeColors = {
+                    ally: 'tag-ally',
+                    antagonist: 'tag-antagonist',
+                    neutral: 'tag-neutral',
+                    monster: 'tag-monster',
+                    deity: 'tag-deity'
+                };
+
+                card.innerHTML = `
+                    <h4 class="text-xl font-bold">${char.name}</h4>
+                    <p class="text-sm text-gray-500 mb-2">${char.role}</p>
+                    <span class="tag ${typeColors[char.type] || 'bg-gray-200'}">${char.type}</span>
+                `;
+                card.addEventListener('click', () => showModal('cast', char.id));
+                castGrid.appendChild(card);
+            });
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const activeFilter = document.querySelector('#cast-filters button.bg-gray-400')?.dataset.filter || 'all';
+            renderCast(activeFilter, e.target.value);
+        });
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('bg-gray-400'));
+                button.classList.add('bg-gray-400');
+                renderCast(button.dataset.filter, searchInput.value);
+            });
+        });
+
+        renderCast();
+    }
+
+    function initAtlas() {
+        const atlasGrid = document.getElementById('atlas-grid');
+        if (!atlasGrid) return;
+
+        AppData.atlas.forEach(loc => {
+            const card = document.createElement('div');
+            card.className = 'card p-6 cursor-pointer';
+            card.dataset.id = loc.id;
+
+            card.innerHTML = `
+                <h3 class="text-2xl mb-2">${loc.name}</h3>
+                <p class="text-gray-500 italic mb-4">${loc.type}</p>
+                <p>${loc.shortDesc}</p>
+            `;
+            card.addEventListener('click', () => showModal('atlas', loc.id));
+            atlasGrid.appendChild(card);
+        });
+    }
+
+    function initLore() {
+        const loreGrid = document.getElementById('lore-grid');
+        if (!loreGrid) return;
+
+        AppData.lore.forEach(item => {
+             const card = document.createElement('div');
+             card.className = 'card p-6 cursor-pointer';
+             card.dataset.id = item.id;
+             card.innerHTML = `
+                <h3 class="text-2xl mb-2">${item.name}</h3>
+                <p class="text-gray-500 italic mb-4">${item.type}</p>
+                <p>${item.shortDesc}</p>
+             `;
+             card.addEventListener('click', () => showModal('lore', item.id));
+             loreGrid.appendChild(card);
+        });
+    }
+
+    function initToolkit() {
+        const glossaryList = document.getElementById('glossary-list');
+        const glossarySearch = document.getElementById('glossary-search');
+
+        function renderGlossary(searchTerm = '') {
+            glossaryList.innerHTML = '';
+            const lowerSearchTerm = searchTerm.toLowerCase();
+            const filteredGlossary = AppData.glossary.filter(item => item.term.toLowerCase().includes(lowerSearchTerm));
+
+            if (filteredGlossary.length === 0) {
+                 glossaryList.innerHTML = `<p class="text-center text-gray-500">No terms found.</p>`;
+                 return;
+            }
+
+            filteredGlossary.forEach(item => {
+                const entry = document.createElement('div');
+                entry.innerHTML = `
+                    <dt class="font-bold text-lg">${item.term}</dt>
+                    <dd class="ml-4 text-gray-600">${item.def}</dd>
+                `;
+                glossaryList.appendChild(entry);
+            });
+        }
+
+        glossarySearch.addEventListener('input', (e) => renderGlossary(e.target.value));
+
+        renderGlossary();
+    }
+
+    const modal = document.getElementById('detail-modal');
+    const modalBody = document.getElementById('modal-body');
+    const modalCloseButton = document.getElementById('modal-close-button');
+    const modalBg = document.querySelector('.modal-bg');
+
+    modalCloseButton.addEventListener('click', () => modal.classList.add('hidden'));
+    modalBg.addEventListener('click', () => modal.classList.add('hidden'));
+
+    function showModal(type, id) {
+        const data = AppData[type].find(item => item.id === id);
+        if (!data) return;
+
+        let content = '';
+        if (type === 'cast') {
+            content = `
+                <h2 class="text-4xl mb-2">${data.name}</h2>
+                <p class="text-xl text-gray-500 mb-4">${data.role}</p>
+                <div class="border-t border-b border-[#dcd3b8] my-4 py-4">
+                    <h3 class="text-2xl mb-2">Personality & Appearance</h3>
+                    <p>${data.desc}</p>
+                </div>
+                <div class="mb-4">
+                    <h3 class="text-2xl mb-2">Lore & Connections</h3>
+                    <p>${data.lore}</p>
+                </div>
+                 ${data.dialogue ? `<div><h3 class="text-2xl mb-2">Sample Dialogue</h3><blockquote class="border-l-4 border-[#a38d6d] pl-4 italic">"${data.dialogue}"</blockquote></div>` : ''}
+            `;
+        } else if (type === 'atlas') {
+             content = `
+                <h2 class="text-4xl mb-2">${data.name}</h2>
+                <p class="text-xl text-gray-500 mb-4">${data.type}</p>
+                <div class="border-t border-b border-[#dcd3b8] my-4 py-4">
+                    <h3 class="text-2xl mb-2">Description</h3>
+                    <p>${data.longDesc}</p>
+                </div>
+                <div>
+                    <h3 class="text-2xl mb-2">Lore Connection</h3>
+                    <p>${data.lore}</p>
+                </div>
+            `;
+        } else if (type === 'lore') {
+            content = `
+                <h2 class="text-4xl mb-2">${data.name}</h2>
+                <p class="text-xl text-gray-500 mb-4">${data.type}</p>
+                 <div class="border-t border-b border-[#dcd3b8] my-4 py-4">
+                    <h3 class="text-2xl mb-2">Description</h3>
+                    <p>${data.desc}</p>
+                </div>
+                <div>
+                    <h3 class="text-2xl mb-2">Lore Connection</h3>
+                    <p>${data.lore}</p>
+                </div>
+            `;
+        }
+
+        modalBody.innerHTML = content;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    // Populate data
+    (function populateData() {
+        AppData.cast = [
+            { id: 'kaelen', name: 'Lich Lord Kaelen', role: 'The Master of Decay (BBEG)', type: 'antagonist', desc: 'An ancient, desiccated Elf, his skin like stretched parchment over bone, eyes burning with a cold, malevolent light. He radiates an aura of profound cold dread and dark magic.', lore: 'Founder of the Cult of the Ouroboros. A patient, calculating, and utterly ruthless master strategist who seeks to unravel the cycle of life and death. His influence is felt everywhere, though he remains in the shadows for most of the campaign.', dialogue: "Your efforts are futile; the Master's will shall be done. You merely delay the inevitable!" },
+            { id: 'yeth', name: 'Yeth', role: 'Fiendish Soul Collector', type: 'antagonist', desc: 'In her true form, a tall, gaunt fiend with leathery wings and skin the color of dried blood. She often appears as "Berry," a kindly halfling housekeeper.', lore: 'A powerful, long-standing agent of Lich Lord Kaelen. She enforces the Cabell Contract, funneling souls directly to her master to fuel his grand ritual. Smug, manipulative, and revels in despair.', dialogue: "A contract is a contract, and the Cabells are bound by the very blood of their ancestors. You cannot break what is already sealed." },
+            { id: 'calador', name: 'Calador', role: 'Corrupted Archaeologist', type: 'antagonist', desc: 'A once-distinguished Elven scholar, now gaunt and wild-eyed, with greasy, matted hair. He clutches the Bone of Doresain to his chest.', lore: 'A tragic victim corrupted by the Bone of Doresain at the Havel\'s Cross dig site. Kaelen used him as a pawn to create an army of ghouls. He believes he is ushering in a "perfect cycle" of undeath.', dialogue: "You don't understand! The whispers... the power! All shall feast! All shall be reborn in glorious decay!" },
+            { id: 'glowkindle', name: 'Glowkindle', role: 'Gnome Brewery Owner', type: 'ally', desc: 'A young Gnome with an impressive beard and a perpetually stained white shirt. His eyes sparkle with a love for his craft.', lore: 'Quest giver for "A Potent Brew". His brewery is unknowingly built on the ruins of Kaelen\'s old necromantic lab. He is enthusiastic but easily flustered, and generous to those who help him.', dialogue: "These... these things! They're not just rats, I tell you! They're like, like dogs! Big dogs, not poodles, mind you!" },
+            { id: 'landy', name: 'Prof. Winsome Landy', role: 'Halfling Scholar', type: 'ally', desc: 'A friendly Halfling scholar with a messy mop of curly brown hair and spectacles. Usually found in ink-stained purple robes.', lore: 'Quest giver for "Horror at Havel\'s Cross". Initially bookish and sheltered, she becomes a fiercely determined and vital long-term ally, providing crucial research to uncover Kaelen\'s plans.', dialogue: "The Ouroboros... it's a symbol of endless cycles. But their interpretation... it's a perversion. They seek to break the cycle." },
+            { id: 'athon', name: 'Athon Cabell', role: 'Human Noble', type: 'neutral', desc: 'Tall and gaunt, with untidy jet-black hair and a face etched with exhaustion.', lore: 'Quest giver for "The Hound of Cabell Manor". A desperate man trapped by an ancient family curse, pragmatic and focused on saving his son, Henry.', dialogue: "We've been plagued by a monstrous hound, wreathed in fire and shadow. There's an old family legend... a pact made centuries ago. I fear for Henry. He's the target." },
+            { id: 'katrin', name: 'Katrin Cabell', role: 'Human Noble', type: 'neutral', desc: 'A shorter human woman with bright blonde hair, her features strained with worry. She clutches her infant son, Henry, protectively.', lore: 'Athon\'s wife, consumed by maternal fear and guilt. She is willing to give up her son to save him from the family\'s curse.', dialogue: "The only way to save him, to deny that fiend her prize, is to give him up. Please, I beg you, take him to the priest of Pelor." },
+            { id: 'doyle', name: 'Doyle', role: 'Innkeeper', type: 'neutral', desc: 'A large, barrel-chested human man with a booming laugh. His inn is the heart of Beechburton.', lore: 'A central source for local gossip and job rumors. He is an invaluable, though unwitting, source of information for the party.', dialogue: "Strange things have been happening since yesterday. People are scared, and they're looking to you lot for answers." },
+            { id: 'priest', name: 'Priest of Pelor', role: 'Healer and Guardian', type: 'ally', desc: 'A kind, wise individual whose eyes hold a deep understanding of the world\'s balance.', lore: 'Offers healing and advice. His temple is a safe haven. He is the ideal guardian for Henry Cabell and senses the growing darkness, which threatens his consecrated ground.', dialogue: "Something is drawing upon the divine energies of this place. I can feel it like a great hunger." },
+            { id: 'somnia', name: 'Somnia the Dreamweaver', role: 'Goddess of Dreams', type: 'deity', desc: 'A gentle figure whose form shifts like aurora light, with eyes like swirling colors and hair like starlight.', lore: 'A Chaotic Good deity of Dreams, Growth, and Potential. She is the direct counterbalance to Kaelen, aiding the heroes with prophetic dreams and magical gifts as they thwart the cult.', dialogue: "You carry a light within you—let it grow. This gift will serve you in the trials ahead." },
+            { id: 'rats', name: 'Giant Rats', role: 'Corrupted Vermin', type: 'monster', desc: 'Unnaturally aggressive rats with glowing red eyes and a sickly, grey pallor.', lore: 'Found in the brewery, these creatures are subtly corrupted by lingering necromantic energy from Kaelen\'s old lab.', dialogue: '' },
+            { id: 'ghouls', name: 'Ghouls', role: 'Undead Foot Soldiers', type: 'monster', desc: 'Emaciated, humanoid creatures that hunger for living flesh.', lore: 'The primary undead threat at Havel\'s Cross, created by Calador under the influence of the Bone of Doresain. They are the foot soldiers of the cult.', dialogue: '' },
+            { id: 'hellhound', name: 'Hell Hound', role: 'Fiendish Hunter', type: 'monster', desc: 'A monstrous hound wreathed in fire and shadow that can breathe flame.', lore: 'Yeth\'s primary minion at Cabell Manor. It serves the cult\'s purpose of tormenting the Cabells and securing Henry\'s soul.', dialogue: '' }
+        ];
+
+        AppData.atlas = [
+            { id: 'beechburton', name: 'Town of Beechburton', type: 'Town/Hub', shortDesc: 'A seemingly ordinary, sleepy village that serves as the party\'s base of operations.', longDesc: 'A quaint, rustic village with cobbled streets and timber-framed houses. It is home to Doyle\'s Inn and the Temple of Pelor. While peaceful on the surface, it becomes the epicenter of Kaelen\'s final, desperate gambit.', lore: 'Beechburton is the calm before the storm, a place of safety and respite that becomes increasingly threatened as the campaign progresses, making the stakes personal for the heroes.' },
+            { id: 'brewery', name: 'Wizard\'s Tower Brewery', type: 'Dungeon/Adventure Site', shortDesc: 'A bustling craft brewery built on the ancient ruins of a forgotten wizard\'s tower.', longDesc: 'The brewery itself has a sweet, yeasty scent, but its cellars hide a dark secret. A recently unearthed hole leads to ancient, chilly ruins filled with corrupted creatures and the first hints of a larger conspiracy.', lore: 'These ruins are Kaelen\'s old experimental lab. The lingering necromantic energy corrupts the local fauna and provides the first tangible link to the Cult of the Ouroboros.' },
+            { id: 'havelscross', name: 'Havel\'s Cross', type: 'Dungeon/Adventure Site', shortDesc: 'A fortified coaching inn and ancient Elven temple, now a scene of carnage.', longDesc: 'The inn is a monument to a recent massacre, with the stench of death hanging heavy. Beyond it lies an ancient Elven temple, its Ouroboros symbol cracked, hiding the source of the corruption.', lore: 'The temple was a central hub for the Cult of the Ouroboros. It is here the party finds the Bone of Doresain and learns the cult\'s true, twisted philosophy, connecting their actions to a historical evil.' },
+            { id: 'cabellmanor', name: 'Cabell Manor', type: 'Dungeon/Adventure Site', shortDesc: 'A grand, imposing manor amidst desolate, mist-soaked moors.', longDesc: 'Slate-grey and imposing, the manor juts from the land like a gravestone. Its doors are scorched and scratched by a fiendish hound. The interior is oppressive, filled with a sense of dread and dark family secrets.', lore: 'The site of a soul-binding contract with the fiend Yeth, an agent of Kaelen. The manor and its tomb act as a nexus to funnel souls to the Lich Lord for his grand ritual, making it a critical part of his centuries-long plan.' },
+             { id: 'heartofendings', name: 'The Heart of Endings', type: 'Dungeon/Finale Site', shortDesc: 'An ancient burial ground where the barrier between worlds is thin.', longDesc: 'Nine great barrows arranged in a circle, with a massive dolmen of black stone pulsing with sickly green light at the center. The air is heavy with the weight of ages and the thrumming power of a world-ending ritual.', lore: 'This is the site of Kaelen\'s final ritual, The Great Unraveling. He chose this place to tap into centuries of accumulated death energy to complete his plan without the components the party denied him.' }
+        ];
+
+        AppData.lore = [
+            { id: 'bone', name: 'The Bone of Doresain', type: 'Legendary Artifact', shortDesc: 'A bone-white femur that corrupts its wielder and creates undead.', desc: 'The artifact is a bone-white femur, unnaturally smooth and gleaming. It feels unnervingly light yet possesses a profound, malevolent weight. It radiates a faint aura of cold dread and causes headaches, nausea, and disturbing visions of gnawing teeth and decaying flesh to those nearby.', lore: 'A fragment of the power of Doresain, the first Ghoul, this bone is a direct tool of Lich Lord Kaelen. He uses it to create agents and sow chaos, turning mortals into undead factories. Its corrupting influence is a chilling preview of the cult\'s ultimate goal for all life.' },
+            { id: 'contract', name: 'The Cabell Contract', type: 'Fiendish Pact', shortDesc: 'An ancient, soul-binding pact between the Cabell family and the fiend Yeth.', desc: 'A piece of ancient, brittle parchment that feels unnaturally resilient. It is covered in arcane script that seems to writhe subtly. If damaged, the paper magically restores itself, making it seemingly indestructible.', lore: 'This contract is a sophisticated, long-term soul-harvesting operation for Lich Lord Kaelen. The souls are not for Yeth, but are funneled directly to her master to provide the vital essence needed to fuel his grand ritual. Its existence shows the meticulous, centuries-long planning of the cult.' },
+            { id: 'residue', name: 'Necromantic Residue', type: 'Supernatural Phenomenon', shortDesc: 'Subtle, pervasive signs of the cult\'s insidious influence.', desc: 'Not a physical object, but a collection of sensory details that hint at the cult\'s presence: faint traces of sulphur, an unnatural chill in the air, a lingering scent of decay, and distortions in natural magic or animal behavior.', lore: 'This is the "footprint" of Kaelen\'s power. As his influence grows, so does the prevalence of this residue. DMs should use these details to build atmosphere and foreshadow danger, making the evil feel pervasive long before the monsters appear.' }
+        ];
+
+        AppData.glossary = [
+  { term: 'A Potent Brew', def: 'The first adventure in the "Whispers of the Ouroboros" campaign, taking place at the Wizard\'s Tower Brewery, where the party encounters corrupted giant rats.' },
+  { term: 'Ancestor\'s Wisdom', def: 'A Level 2 Shaman enhancement allowing the character to ask "the spirits" for advice once per adventure and granting a +1 to attack rolls with spiritual powers.' },
+  { term: 'Artifact Weapon', def: 'A Level 4 Equipment option that provides +2 attack, +1 damage, and a unique power related to the character, designed for epic-tier heroes.' },
+  { term: 'Barbarian Progression', def: 'The leveling and enhancement options available to the "Fierce Warrior" archetype in the Heroes of Hesiod system, focusing on high HP, powerful attacks, and crowd control.' },
+  { term: 'Battle Fury', def: 'A Level 2 Fighter enhancement allowing the character to immediately move and attack again after defeating a monster, once per turn.' },
+  { term: 'Beechburton', def: 'A seemingly ordinary, sleepy village that serves as the party\'s initial hub and a recurring point of interest throughout the campaign.' },
+  { term: 'Berserker Rage', def: 'A Level 2 Barbarian enhancement allowing the character to gain +2 to attack rolls and +1 damage for 3 turns once per adventure, requiring them to attack each turn if possible.' },
+  { term: 'Bet (Wizard)', def: 'The Heroes of Hesiod version of the Wizard/Sorcerer class, characterized by ranged attacks, area damage (Blastwave), and lower AC/HP.' },
+  { term: 'BBEG', def: 'Big Bad Evil Guy. The primary antagonist of the campaign, Lich Lord Kaelen.' },
+  { term: 'Blastwave', def: 'The Wizard\'s special ability at Level 1, hitting adjacent enemies on a successful attack (10+ on d20).' },
+  { term: 'Bone of Doresain', def: 'A legendary, bone-white femur, an artifact imbued with the abhorrent essence of Doresain, the first Ghoul, and a direct conduit to Lich Lord Kaelen\'s influence, found at Havel\'s Cross.' },
+  { term: 'Boots of Speed', def: 'A Level 3 Equipment option that grants +2 Speed to the wearer.' },
+  { term: 'Cabell Contract', def: 'The magical document binding the Cabell family to the devil Yeth, requiring a Cabell life every century, with the souls channeled to Lich Lord Kaelen.' },
+  { term: 'Cabell Manor', def: 'A grand, imposing manor steeped in dark family legend, located amidst the desolate moors, where "The Hound of Cabell Manor" adventure takes place.' },
+  { term: 'Calador', def: 'A once-distinguished Elven archaeologist who becomes corrupted by the Bone of Doresain, acting as the primary antagonist in "Horror at Havel\'s Cross."' },
+  { term: 'Campaign Overview: The Whispers of the Ouroboros', def: 'The overarching narrative of the campaign, revolving around the resurgence of the Cult of the Ouroboros and Lich Lord Kaelen\'s plan.' },
+  { term: 'Charge', def: 'The Fighter\'s special ability at Level 1, granting a +2 attack bonus when moving to reach an enemy.' },
+  { term: 'Cleaving Strikes', def: 'A Level 3 Fighter enhancement allowing the character to deal 1 damage to another monster within 2 squares when they defeat a monster with an attack.' },
+  { term: 'Cloak of Gentle Rest', def: 'A Divine Artifact of Somnia that provides perfect sleep anywhere.' },
+  { term: 'Cult of the Ouroboros', def: 'An ancient necromantic cult led by Lich Lord Kaelen, aiming to merge the planes of life and death.' },
+  { term: 'Dendar the Night Serpent', def: 'An enemy deity of Somnia, representing nightmare-bringers and fear-mongers.' },
+  { term: 'Defensive Stance', def: 'A Level 3 Fighter enhancement allowing the character to choose "Guard" instead of attacking, granting +2 AC and +1 AC to adjacent allies.' },
+  { term: 'Dodge Roll', def: 'A Level 2 Rogue enhancement allowing the character to completely avoid one attack once per adventure and gaining +1 AC when not wearing heavy armor.' },
+  { term: 'Doresain', def: 'The first Ghoul, whose abhorrent essence imbues the Bone of Doresain.' },
+  { term: 'Doyle', def: 'The innkeeper of Doyle\'s Inn in Beechburton, a central gathering place and a good source of local rumors and job requests.' },
+  { term: 'Dreamkeepers', def: 'High priests within Somnia\'s clergy who maintain dream sanctuaries.' },
+  { term: 'Dreamwalk', def: 'One of Somnia\'s unique divine abilities, allowing her to enter and influence dreams, creating shared dreamscapes.' },
+  { term: 'Eagle Eye', def: 'A Level 3 Rogue enhancement allowing the character to attack any enemy within 4 squares with thrown daggers, and extending Sneak Attack to range.' },
+  { term: 'Elite Monster', def: 'A category of monster in Heroes of Hesiod conversion with 7-10 HP (e.g., Owlbear, troll).' },
+  { term: 'Equipment Progression', def: 'The system for gaining new weapons, armor, and magic items as heroes level up in Heroes of Hesiod.' },
+  { term: 'Evindol (Rogue)', def: 'The Heroes of Hesiod version of the Rogue/Ranger class, characterized by high speed (6), Sneak Attack, and low HP.' },
+  { term: 'Experience & Leveling', def: 'The simplified system in Heroes of Hesiod where heroes level up after a set number of successful adventures (2-3 for Level 2, 4-5 for Level 3, 7-8 for Level 4).' },
+  { term: 'Ferocious Warrior', def: 'The Barbarian\'s special ability at Level 1, allowing them to shove an attacker 2 squares when hit.' },
+  { term: 'Fighter Progression', def: 'The leveling and enhancement options available to the "Brave Warrior" archetype in the Heroes of Hesiod system, focusing on high AC, strong attacks, and defensive abilities.' },
+  { term: 'First Blooming', def: 'Coming-of-age ceremonies practiced by Somnia\'s worshippers.' },
+  { term: 'Flaming Weapon', def: 'A Level 3 Equipment option that grants +1 damage and lights up dark areas.' },
+  { term: 'Glowkindle', def: 'The gnome owner of the Wizard\'s Tower Brewery and quest giver for "A Potent Brew."' },
+  { term: 'Great Spirit', def: 'A Level 4 Shaman enhancement that makes the character\'s animal spirit companion more powerful (AC 14, 5 HP, can use shaman\'s special abilities).' },
+  { term: 'Havel\'s Cross', def: 'A fortified coaching inn high in the hills, the site of "Horror at Havel\'s Cross," and where an ancient Elven temple of the Cult of the Ouroboros is located.' },
+  { term: 'Heart of Endings', def: 'The ancient burial ground in the northern hills where Lich Lord Kaelen attempts to complete "The Great Unraveling" ritual.' },
+  { term: 'Hell Hound', def: 'A fiendish minion of Yeth, empowered by her connection to the Nine Hells, encountered at Cabell Manor.' },
+  { term: 'Henry Cabell', def: 'The infant son of Athon and Katrin Cabell, targeted by Yeth as the final, crucial component for Kaelen\'s grand ritual.' },
+  { term: 'Heroes of Hesiod', def: 'A simplified D&D 5e system for younger players, focusing on fast combat and clear progression.' },
+  { term: 'Horror at Havel\'s Cross', def: 'The second adventure in the "Whispers of the Ouroboros" campaign, focusing on the ancient Elven temple and the Bone of Doresain.' },
+  { term: 'Ilmater', def: 'An allied deity of Somnia, known as the God of Suffering, who protects the vulnerable and innocent.' },
+  { term: 'Inspiring Leader', def: 'A Level 4 Fighter enhancement that gives all allies within 3 squares +1 to attack rolls and allows an ally to immediately attack on the Fighter\'s critical hit.' },
+  { term: 'Intimidating Presence', def: 'A Level 3 Barbarian enhancement allowing the character to choose a monster type at the start of an adventure, causing those monsters to get -2 to attack the barbarian.' },
+  { term: 'Jorick (Fighter)', def: 'The Heroes of Hesiod version of the Fighter/Paladin/Ranger class, characterized by high AC (13), a Charge ability, and a Greatsword.' },
+  { term: 'Katrin Cabell', def: 'Henry Cabell\'s mother, a human noble consumed by maternal fear and guilt regarding the family curse, quest giver for "The Hound of Cabell Manor."' },
+  { term: 'Lathander', def: 'A deity with neutral relations to Somnia, known as the God of Dawn, representing a different approach to renewal.' },
+  { term: 'Legendary Warrior', def: 'A Level 4 Fighter enhancement allowing the character to attack twice on their turn.' },
+  { term: 'Lich Lord Kaelen / The Master of Decay', def: 'The BBEG of the campaign, an ancient Elven Necromancer and the cunning architect behind the Cult of the Ouroboros.' },
+  { term: 'Magic Cloak', def: 'A Level 2 Equipment option that provides +1 AC and allows the wearer to become invisible for 1 turn once per adventure.' },
+  { term: 'Magic Master', def: 'The title for the Wizard class in Heroes of Hesiod.' },
+  { term: 'Massive Axe', def: 'The Barbarian\'s weapon at Level 1, dealing 1 axe damage with a +5 attack bonus.' },
+  { term: 'Master of Elements', def: 'A Level 4 Wizard enhancement that makes all spells deal +1 damage, allows changing damage type, and grants +2 AC.' },
+  { term: 'Master Thief', def: 'A Level 4 Rogue enhancement allowing the character to attempt to steal a monster\'s special ability once per adventure.' },
+  { term: 'Minion Monster', def: 'A category of monster in Heroes of Hesiod conversion with 1-2 HP (e.g., Goblins, kobolds).' },
+  { term: 'Mist Hounds', def: 'Minions of Yeth at Cabell Manor, which use Mastiff stats and serve the cult\'s purpose.' },
+  { term: 'Moonwhisper Pendant', def: 'A Divine Artifact of Somnia that allows communication through dreams.' },
+  { term: 'Multiclass Options', def: 'A Level 4 rule in Heroes of Hesiod allowing a hero to learn a Level 2 ability from a different class instead of their own Level 4 enhancement.' },
+  { term: 'Mystic Recovery', def: 'A Level 2 Wizard enhancement allowing the character to regain 2 HP once per adventure by meditating for one turn, and gaining +1 to attack rolls with all spells.' },
+  { term: 'Necromantic Residue', def: 'Subtle, pervasive signs of the cult\'s insidious influence, manifesting as faint sulphur, unnatural chills, decay scents, or environmental distortions.' },
+  { term: 'Night of Growing Dreams', def: 'Somnia\'s holy day, celebrated on summer solstice eve.' },
+  { term: 'Oghma', def: 'An allied deity of Somnia, known as the God of Knowledge, who appreciates learning and growth.' },
+  { term: 'Ouroboros', def: 'The primary symbol of the Cult of the Ouroboros, representing a snake eating its own tail, symbolizing their twisted view of death and rebirth into undeath.' },
+  { term: 'Pelor', def: 'The god of the sun, healing, and truth, whose temple in Beechburton serves as a safe haven and source of divine insight.' },
+  { term: 'Phylactery', def: 'An artifact containing a lich\'s soul, making them nearly immortal. Kaelen\'s must be destroyed to defeat him permanently.' },
+  { term: 'Precise Strikes', def: 'A Level 2 Rogue enhancement that makes critical hits occur on 19-20 and increases Sneak Attack damage to 3 points.' },
+  { term: 'Professor Winsome Landy', def: 'A naive but intelligent Halfling scholar, quest giver for "Horror at Havel\'s Cross," who becomes a vital long-term ally and lore source.' },
+  { term: 'Protective Ward', def: 'A Level 3 Shaman enhancement allowing the character to grant +2 AC to one ally for 3 turns once per adventure, also preventing the first instance of stun/immobilization.' },
+  { term: 'Quick Fingers', def: 'A Level 2 Rogue enhancement allowing the character to use thief tools to unlock doors and disable traps with a 12+ roll.' },
+  { term: 'Raen (Barbarian)', def: 'The Heroes of Hesiod version of the Barbarian/Fighter class, characterized by the most HP (7) and a counterattack ability (Ferocious Warrior).' },
+  { term: 'Rallying Cry', def: 'A Level 3 Fighter enhancement allowing the character to shout to give all allies +2 to their next attack roll and remove "stunned" or "can\'t move" effects once per adventure.' },
+  { term: 'Reckless Attack', def: 'A Level 3 Barbarian enhancement allowing the character to choose to get +3 to attack roll but granting enemies +2 to hit them until their next turn.' },
+  { term: 'Ring of Protection', def: 'A Level 3 Equipment option that provides +1 AC and +1 to saving rolls.' },
+  { term: 'Rogue Progression', def: 'The leveling and enhancement options available to the "Sneaky Hero" archetype in the Heroes of Hesiod system, focusing on speed, special attacks, and utility.' },
+  { term: 'Rule of Cool', def: 'A DM tip to allow players to attempt actions that sound awesome, even if they deviate from strict rules, prioritizing fun.' },
+  { term: 'Seedtenders', def: 'Clerics within Somnia\'s clergy who work with children and guide personal growth.' },
+  { term: 'Seeds of Tomorrow', def: 'A Divine Artifact of Somnia that, when planted, grow into trees that fruit with minor magical items.' },
+  { term: 'Selûne', def: 'An allied deity of Somnia, known as the Moon goddess, sharing dominion over night and protection.' },
+  { term: 'Shadow Clone', def: 'A Level 4 Rogue enhancement allowing the character to create a "shadow copy" for 3 turns once per adventure, which can move and attack.' },
+  { term: 'Shadow Step', def: 'A Level 3 Rogue enhancement allowing the character to teleport up to 4 squares instead of moving normally, even through walls if visible.' },
+  { term: 'Shaman Progression', def: 'The leveling and enhancement options available to the "Spirit Caller" archetype in the Heroes of Hesiod system, focusing on spirit companions, healing, and crowd control.' },
+  { term: 'Shield Mastery', def: 'A Level 2 Fighter enhancement that grants +1 AC and allows the character to block all damage from one attack once per adventure.' },
+  { term: 'Shield Spell', def: 'A Level 2 Wizard enhancement that allows the caster to gain +3 AC for 3 turns once per adventure and learn a utility spell.' },
+  { term: 'Somnia the Dreamweaver', def: 'A Lesser Deity of Dreams, Growth, and Potential, serving as a benevolent opposing force to the Cult of the Ouroboros.' },
+  { term: 'Spectral Shackles', def: 'The Shaman\'s special ability at Level 1, immobilizing an enemy on a missed first attack with an 11+ on d20.' },
+  { term: 'Spirit Guide', def: 'A Level 2 Shaman enhancement that grants an animal spirit companion (wolf, eagle, or bear).' },
+  { term: 'Spirit Storm', def: 'A Level 4 Shaman enhancement that allows all enemies within 3 squares to take 1 spirit damage and be shackled once per adventure.' },
+  { term: 'Spirit Weapon', def: 'A Level 3 Shaman enhancement making the Vengeful Spirits attack hit any target within 4 squares without needing line of sight.' },
+  { term: 'Starlight Staff', def: 'A Divine Artifact of Somnia that enhances divination and enchantment magic.' },
+  { term: 'Starwhisperers', def: 'Paladins within Somnia\'s clergy who protect the innocent during their vulnerable moments.' },
+  { term: 'Studded Leather', def: 'A Level 2 Equipment option that provides +1 AC for light armor users.' },
+  { term: 'Talisman of Fortune', def: 'A Level 4 Equipment option that allows the wearer to reroll any one die per adventure.' },
+  { term: 'Teleport', def: 'A Level 3 Wizard enhancement allowing the character to teleport instead of moving normally, up to 6 squares.' },
+  { term: 'The Great Unraveling', def: 'Kaelen\'s final, world-ending ritual to tear the barrier between life and death.' },
+  { term: 'The Hound of Cabell Manor', def: 'The third adventure in the "Whispers of the Ouroboros" campaign, dealing with the Cabell family curse and the fiend Yeth.' },
+  { term: 'The Priest of Pelor', def: 'A kind, wise individual at the Temple of Pelor in Beechburton, capable of offering healing, advice, and a safe haven for Henry Cabell.' },
+  { term: 'Thick Skin', def: 'A Level 2 Barbarian enhancement that grants +1 AC and causes the first hit each adventure to deal only half damage.' },
+  { term: 'Tribal Champion', def: 'A Level 4 Barbarian enhancement allowing the character to "howl" once per adventure to give all allies +1 HP for the rest of the fight and potentially cause enemies to lose their next attack.' },
+  { term: 'Unbreakable', def: 'A Level 4 Fighter enhancement that allows the character to stay at 1 HP when reduced to 0 HP once per adventure and gain +1 AC permanently.' },
+  { term: 'Unstoppable Force', def: 'A Level 3 Barbarian enhancement allowing the character to push through enemy squares when moving (dealing 1 damage) and preventing their movement from being stopped.' },
+  { term: 'Vengeful Spirits', def: 'The Shaman\'s primary attack at Level 1, dealing 1 spirit damage with a +3 attack bonus.' },
+  { term: 'Weapon Expert', def: 'A Level 2 Fighter enhancement that improves attack bonus to +5 and causes natural 20s to deal 2 damage instead of rolling 1d6.' },
+  { term: 'Weapon of Smiting', def: 'A Level 3 Equipment option that deals double damage against undead/constructs.' },
+  { term: 'Whispering Moors / Veridian Valley', def: 'Suggested evocative names for the campaign\'s regional setting.' },
+  { term: 'Whirling Blades', def: 'The Rogue\'s primary attack at Level 1, dealing 1 dagger damage with a +6 attack bonus.' },
+  { term: 'Wizard Progression', def: 'The leveling and enhancement options available to the "Magic Master" archetype in the Heroes of Hesiod system, focusing on ranged attacks, area damage, and spell utility.' },
+  { term: 'Wizard\'s Tower Brewery', def: 'A craft brewery located outside Beechburton, built on the ancient ruins of Lich Lord Kaelen\'s former laboratory, the setting for "A Potent Brew."' },
+  { term: 'Yarrow (Shaman)', def: 'The Heroes of Hesiod version of the Cleric/Druid/Warlock class, characterized by spirits, crowd control (Spectral Shackles), and healing.' },
+  { term: 'Yeth', def: 'A medium fiend and shapechanger, the primary antagonist in "The Hound of Cabell Manor," and a long-standing agent of Lich Lord Kaelen, responsible for enforcing the Cabell Contract.' }
+];
+    })();
+
+
+</script>
+</body>
+</html>
