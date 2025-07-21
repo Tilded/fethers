@@ -109,6 +109,7 @@
                         <button class="nav-button px-3 py-2 text-sm font-medium" data-target="atlas">Atlas</button>
                         <button class="nav-button px-3 py-2 text-sm font-medium" data-target="lore">Lore</button>
                         <button class="nav-button px-3 py-2 text-sm font-medium" data-target="toolkit">DM Toolkit</button>
+                        <button class="nav-button px-3 py-2 text-sm font-medium" data-target="player-toolkit">Player Toolkit</button>
                     </div>
                 </div>
                 <div class="-mr-2 flex md:hidden">
@@ -128,6 +129,7 @@
                 <button class="nav-button block w-full text-left px-3 py-2 rounded-md text-base font-medium" data-target="atlas">Atlas</button>
                 <button class="nav-button block w-full text-left px-3 py-2 rounded-md text-base font-medium" data-target="lore">Lore</button>
                 <button class="nav-button block w-full text-left px-3 py-2 rounded-md text-base font-medium" data-target="toolkit">DM Toolkit</button>
+                <button class="nav-button block w-full text-left px-3 py-2 rounded-md text-base font-medium" data-target="player-toolkit">Player Toolkit</button>
             </div>
         </div>
     </header>
@@ -143,7 +145,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-2 card p-6">
                     <h3 class="text-2xl mb-4">Core Conflict</h3>
-                    <p class="mb-4">This campaign revolves around the insidious resurgence of the **Cult of the Ouroboros**, a malevolent necromantic cult led by the ancient **Lich Lord Kaelen**. The cult's goal is to unravel the natural cycle of life and death, transforming the world into a realm of eternal undeath where their dark patron can manifest. The heroes will uncover this conspiracy piece by piece, as each adventure reveals another facet of Kaelen's grand plan.</p>
+                    <p class="mb-4">This campaign revolves around the insidious resurgence of the **Cult of the Ouroboros**, a malevolent necromantic cult led by the ancient **Lich Lord Kaelen**. The cult's goal is to unravel the natural cycle of life and death, transforming the world into a realm of eternal undeath where their dark patron can manifest.</p>
                     <p>Opposing this decay is **Somnia the Dreamweaver**, a deity of growth and potential who aids the heroes through dreams and divine gifts, acting as a crucial counterbalance to the cult's dark influence.</p>
                 </div>
                 <div class="card p-6 flex flex-col items-center justify-center">
@@ -241,22 +243,39 @@
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="card p-6">
-                    <h3 class="text-2xl mb-4">Heroes of Hesiod Rules</h3>
+                    <h3 class="text-2xl mb-4">Rules</h3>
                     <p class="mb-2">This campaign is adapted for the "Heroes of Hesiod" system for younger players, focusing on simple turns, fast combat, and clear rewards.</p>
                     <ul class="list-disc list-inside space-y-1">
-                        <li>**Progression:** Levels are gained after a set number of adventures, not XP.</li>
-                        <li>**Combat:** Monsters are simplified into roles (Minion, Elite, etc.) with low HP for faster encounters.</li>
-                        <li>**Rewards:** Players get tangible rewards like magic items (often from Somnia) after key victories.</li>
+                        <li>Progression: Levels are gained after a set number of adventures, not XP.</li>
+                        <li>Combat: Monsters are simplified into roles (Minion, Elite, etc.) with low HP for faster encounters.</li>
+                        <li>Rewards: Players get tangible rewards like magic items (often from Somnia) after key victories.</li>
+                    </ul>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-2xl mb-4">Experience & Leveling</h3>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Level 1: Starting heroes (base stats from original game).</li>
+                        <li>Level 2: After 2-3 successful adventures.</li>
+                        <li>Level 3: After 4-5 total adventures.</li>
+                        <li>Level 4: After 7-8 total adventures (maximum recommended).</li>
+                    </ul>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-2xl mb-4">What You Get Each Level</h3>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>+1 Hit Point (except Level 4).</li>
+                        <li>Choice of Enhancement from your class list.</li>
+                        <li>New Equipment Option (see Equipment section).</li>
                     </ul>
                 </div>
                 <div class="card p-6">
                     <h3 class="text-2xl mb-4">Top DM Tips</h3>
                      <ul class="list-disc list-inside space-y-1">
-                        <li>**Describe Vividly:** Use all five senses to immerse your players.</li>
-                        <li>**Encourage Roleplaying:** Ask "What do you do?" and reward creativity.</li>
-                        <li>**Be Flexible:** Player choices drive the story. Improvise and adapt.</li>
-                        <li>**Rule of Cool:** If an idea is awesome, find a way to make it work.</li>
-                        <li>**Have Fun:** Your enthusiasm is contagious!</li>
+                        <li>Describe Vividly: Use all five senses to immerse your players.</li>
+                        <li>Encourage Roleplaying: Ask "What do you do?" and reward creativity.</li>
+                        <li>Be Flexible: Player choices drive the story. Improvise and adapt.</li>
+                        <li>Rule of Cool: If an idea is awesome, find a way to make it work.</li>
+                        <li>Have Fun: Your enthusiasm is contagious!</li>
                     </ul>
                 </div>
                  <div class="lg:col-span-2 card p-6">
@@ -268,6 +287,1454 @@
                 </div>
             </div>
         </div>
+
+        <!-- Player Toolkit View (New Section) -->
+        <div id="player-toolkit" class="view hidden">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl">Player Toolkit</h2>
+                <p class="mt-2 text-lg text-gray-600">Information for each player class, including their abilities, progression, and combat tips.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Barbarian Section -->
+                <div class="card p-6 overflow-y-auto max-h-[70vh]">
+                    <h3 class="text-2xl mb-4">Barbarian</h3>
+                    <pre class="whitespace-pre-wrap text-sm font-mono leading-tight">
+--- PAGE 1 ---
+
+[Image 1]
+
+BARBARIAN
+
+The Whispers of the Ouroboros
+
+CHARACTER INFORMATION
+
+
+"Name:
+",
+"Level:
+",
+"Experience:
+","8 Adventures
+"
+"Armor Class:
+
+
+Hit Points:
+","9 (+1 per Thick Skin enhancement)
+7 (+1 per level except Level 4)
+"
+"Speed:
+","5 squares
+"
+"Attack Bonus:
+","+5
+"
+
+COMBAT ABILITIES
+
+Primary Attack: Massive Axe
+
+
+"Roll:
+
+
+Damage:
+","1d20+5 vs enemy AC
+1 axe damage (2 on natural 20)
+"
+"Range:
+","Adjacent
+"
+
+Special Ability: Ferocious Warrior
+
+When hit by an enemy attack, shove the attacker 2 squares
+away from you.
+
+EQUIPMENT
+
+Level 2 Equipment:
+
+Level 3 Equipment:
+
+Level 4 Equipment:
+
+QUICK REFERENCE
+
+Your Combat Turn:
+
+1. MOVE up to 5 squares (more with equipment)
+
+2. ATTACK with Massive Axe (1d20+5 vs AC)
+
+3. SPECIAL Ferocious Warrior triggers when hit (auto-
+
+matic)
+
+4. ENHANCEMENT Use your chosen level ability if ap-
+plicable
+
+Out of Combat Actions:
+
+Intimidate: Scare information out of enemies use your
+fierce reputation
+
+Survival: Track creatures, find food/shelter - roll 10+ to
+succeed
+
+Athletics: Feats of strength, climbing roll 10+ to suc-
+ceed with advantage
+
+Smash Things: Break down doors, destroy obstacles
+Tribal Wisdom: Knowledge about nature, beasts, and
+wilderness
+
+
+--- PAGE 2 ---
+
+LEVEL PROGRESSION
+
+Level 2 Enhancement (Choose One):
+Thick Skin
+
+- Gain +1 AC (total AC becomes 10)
+
+First hit each adventure deals half damage (round
+
+down, minimum 1)
+
+■Berserker Rage
+
+- Once per adventure: For 3 turns, +2 to attack rolls and
++1 damage
+
+During rage, must attack each turn if possible
+
+Mighty Shove
+
+- Ferocious Warrior now pushes enemies 3 squares instead
+of 2
+
+- Can push enemies into walls/obstacles for +1 damage
+
+Level 3 Enhancement (Choose One):
+
+■Intimidating Presence
+
+Start of each adventure: Choose one monster type (gob-
+lins, undead, etc.)
+
+- Those monsters get -2 to attack you (they're scared!)
+Reckless Attack
+
+Choose to get +3 to attack roll, but enemies get +2 to
+hit you until your next turn
+
+Can use multiple times per adventure
+
+■Unstoppable Force
+
+- When moving, can push through enemy squares (they
+take 1 damage)
+
+- Movement can't be stopped by special abilities
+
+Level 4 Enhancement (Choose One):
+
+■Primal Fury
+
+When at half HP or less: 2 to all attack rolls, +1 to
+
+all damage
+
+- Ferocious Warrior triggers even when you dodge attacks
+■Damage Dealer
+
+- All attacks deal +1 damage (2 damage per hit normally,
+3 on crits)
+
+Hit points remain the same for balance
+
+■Tribal Champion
+
+- Once per adventure: "Howl" to give all allies +1 HP
+for the rest of the fight
+
+- Enemies within 2 squares must roll 15+ or lose their
+next attack
+
+EQUIPMENT PROGRESSION
+
+Level 2 Equipment (Choose One):
+
+Bloodfang Axe (+1 Magic Weapon)
+
+Carved from the tusk of a dire boar, it thirsts for battle.
++1 to attack rolls
+
+■Warsong Maul (Versatile Weapon)
+
+This weapon hums ancient battle hymns when swung.
+
+Choose +2 attack OR +1 damage each turn
+
+■Thunderstrike Hammer (Returning Weapon)
+Forged by storm giants in the heart of a hurricane.
+
+Thrown weapons return automatically
+
+Hide of the Great Bear (Studded Leather)
+
+Taken from a legendary beast that protected the wilder-
+ness.
+
++1 AC for light armor users
+
+■Shadowmane Cloak (Magic Cloak)
+
+Crafted from the mane of a shadow panther.
+
++1 AC, once per adventure become invisible for 1 turn
+
+■Troll's Blood Elixir (Healing Potion)
+
+Made from ingredients that help trolls regenerate.
+
+Restore 3 HP, single use per adventure
+
+Level 3 Equipment (Choose One):
+
+■Inferno Cleaver (Flaming Weapon)
+
+Quenched in dragon's breath, it burns with eternal flame.
+
++1 damage, lights up dark areas
+
+■Gravebane (Weapon of Smiting)
+
+Blessed by shamans to drive back the walking dead.
+
+Deal double damage vs undead/constructs
+
+■Mountainbreaker (Giant Slayer)
+
+Wielded by the legendary giant-slayer Kromash the Bold.
+
+Deal +2 damage vs Large creatures
+
+■Windrunner Boots (Boots of Speed)
+
+Allow the wearer to run as fast as the wind itself.
++2 Speed
+
+■Ring of the Iron Will (Ring of Protection)
+Strengthens both body and spirit against all threats.
++1 AC, +1 to saving rolls
+
+■Pouch of Wild Calling (Bag of Tricks)
+
+Contains totems that call forth animal spirits.
+
+Once per adventure, summon helpful animal for 3 turns
+
+Level 4 Equipment (Choose One):
+
+■Axe of the Tribal King (Artifact Weapon)
+Passed down through generations of barbarian chiefs.
++2 attack, +1 damage, unique tribal power
+Mail of the Storm Lord (Armor of Heroes)
+Forged from metals struck by lightning a thousand times.
++2 AC, immunity to fear/charm effects
+
+Totem of the Wild Hunt (Talisman of Fortune)
+Grants the favor of the spirits of chance and fate.
+Reroll any one die per adventure (keep better result)
+
+
+--- PAGE 3 ---
+
+COMBAT TIPS
+
+Your high attack bonus $(+5)$ makes you very reliable
+
+Use Ferocious Warrior to control enemy positioning
+
+You have the most HP don't be afraid to take hits for the team
+
+Enhancement abilities often make you even more dangerous when wounded
+
+ADVENTURE LOG
+
+Adventures Completed:
+
+☐
+
+Cool Things My Hero Did:
+
+Equipment Acquired:
+
+Boss Enemies Defeated:
+                    </pre>
+                    <p class="text-right mt-4">
+                        <a href="barbarian.pdf" class="text-[#d35400] hover:underline">Click here for printable version</a>
+                    </p>
+                </div>
+
+                <!-- Fighter Section -->
+                <div class="card p-6 overflow-y-auto max-h-[70vh]">
+                    <h3 class="text-2xl mb-4">Fighter</h3>
+                    <pre class="whitespace-pre-wrap text-sm font-mono leading-tight">
+--- PAGE 1 ---
+
+[Image 1]
+
+FIGHTER
+
+The Whispers of the Ouroboros
+
+CHARACTER INFORMATION
+
+Name:
+
+Level:
+
+8 Adventures
+
+13 (+1 per Shield enhancement)
+
+5 (+1 per level except Level 4)
+5 squares
+
+Experience:
+
+Armor Class:
+
+Hit Points:
+
+Speed:
+
+Attack Bonus:
+
++4 (+1 with Weapon Expert)
+
+COMBAT ABILITIES
+
+Primary Attack: Greatsword Cleave
+
+Roll:
+
+1d20+4 vs enemy AC
+
+Damage:
+
+Range:
+
+1 greatsword damage (2 on natural 20)
+Adjacent
+
+Special Ability: Charge
+
+When you move to reach an enemy, gain +2 to your attack
+roll that turn.
+
+EQUIPMENT
+
+Level 2 Equipment:
+
+Level 3 Equipment:
+
+Level 4 Equipment:
+
+QUICK REFERENCE
+
+Your Combat Turn:
+
+1. MOVE up to 5 squares (more with equipment)
+
+2. ATTACK with Greatsword Cleave (1d20+4 vs AC)
+
+3. SPECIAL Use Charge if you moved to reach enemy (+2
+
+attack)
+
+4. ENHANCEMENT Use your chosen level ability if ap-
+plicable
+
+Out of Combat Actions:
+
+Investigate: Look for clues, examine objects (no roll
+needed usually)
+
+Social: Talk to NPCs be brave, honest, or diplomatic
+Athletics: Climb, jump, break things roll 10+ to suc-
+ceed
+
+Help Allies: Give advantage by working together
+Guard: Watch for danger while others explore
+
+
+--- PAGE 2 ---
+
+LEVEL PROGRESSION
+
+Level 2 Enhancement (Choose One):
+
+■Shield Mastery
+
+- Gain +1 AC (total AC becomes 14)
+
+Once per adventure: Block all damage from one attack
+
+■Weapon Expert
+
+Attack bonus becomes +5
+
+- Natural 20s deal 2 damage instead of rolling 1d6
+
+■Battle Fury
+
+After defeating a monster, immediately move up to
+speed and attack again
+
+Can only trigger once per turn
+
+Level 3 Enhancement (Choose One):
+
+■Defensive Stance
+
+- Can choose "Guard" instead of attacking
+
+While guarding: +2 AC, adjacent allies get +1 AC
+
+Cleaving Strikes
+
+When you defeat a monster, deal 1 damage to another
+monster within 2 squares
+
+Works with any killing blow
+
+Rallying Cry
+
+Once per adventure: Give all allies +2 to their next
+attack roll
+
+Removes "stunned" or "can't move" effects from allies
+
+Level 4 Enhancement (Choose One):
+
+■Legendary Warrior
+
+Attack twice per turn (move
+
+attack + move + attack)
+
+- Hit points remain the same
+
+Unbreakable
+
+attack attack, or
+
+Once per adventure: When reduced to 0 HP, stay at 1
+
+HP instead
+
+Gain +1 AC permanently
+
+■Inspiring Leader
+
+- All allies within 3 squares get +1 to attack rolls
+When you critical hit, one ally can immediately attack
+
+EQUIPMENT PROGRESSION
+
+Level 2 Equipment (Choose One):
+
+■Drakescale Blade (+1 Magic Weapon)
+
+Forged from the shed scales of ancient drakes, this blade
+
+hums with draconic power.
+
++1 to attack rolls
+
+■Ironwood Maul (Versatile Weapon)
+
+Carved from trees that grew in battlefields, it adapts to
+any fighting style.
+
+Choose +2 attack OR +1 damage each turn
+
+■Boomerang Axe (Returning Weapon)
+
+Blessed by wind spirits, this weapon always finds its way
+back to your hand.
+
+Thrown weapons return automatically
+
+■Studded Leather (Armor)
+
+Reinforced with iron studs taken from defeated foes.
+
++1 AC for light armor users
+
+■Cloak of Whispers (Magic Cloak)
+
+Woven from shadows by the Guild of Silent Steps.
++1 AC, once per adventure become invisible for 1 turn
+
+■Potion of Battlefield Healing (Healing Potion)
+Brewed by army medics from rare mountain herbs.
+Restore 3 HP, single use per adventure
+
+Level 3 Equipment (Choose One):
+
+■Flamebrand (Flaming Weapon)
+
+Once wielded by a hero who fought alongside a phoenix.
+
++1 damage, lights up dark areas
+
+■Bone Crusher (Weapon of Smiting)
+
+Consecrated by temple priests to battle the undead hordes.
+
+Deal double damage vs undead/constructs
+
+■Titan's Edge (Giant Slayer)
+
+Forged specifically to bring down creatures of enormous
+size.
+
+Deal +2 damage vs Large creatures
+
+■Boots of the Swift Wind (Boots of Speed)
+Crafted by elven runners who could outpace horses.
+
++2 Speed
+
+Ring of Aegis (Ring of Protection)
+
+Bears the seal of an ancient order of guardians.
+
++1 AC, +1 to saving rolls
+
+Satchel of Wonders (Bag of Tricks)
+
+Contains treats that summon forest creatures to aid you.
+Once per adventure, summon helpful animal for 3 turns
+
+Level 4 Equipment (Choose One):
+
+Sword of Heroes (Artifact Weapon)
+
+Blade of legend that grows stronger with its wielder's
+courage.
+
++2 attack, +1 damage, unique hero power
+
+Plate of the Eternal Guard (Armor of Heroes)
+
+Worn by the first knights who swore oaths to protect the
+innocent.
+
++2 AC, immunity to fear/charm effects
+
+Medallion of Fortune's Favor (Talisman of Fortune)
+
+Said to contain a fragment of luck itself.
+
+Reroll any one die per adventure (keep better result)
+
+
+--- PAGE 3 ---
+
+COMBAT TIPS
+
+Use Charge whenever possible (+2 attack is powerful)
+Position yourself between enemies and fragile allies
+Your high AC makes you great at drawing enemy attacks
+Save special abilities for important moments
+
+ADVENTURE LOG
+
+Adventures Completed:
+
+☐ ☐ ☐ ☐ ☐ ☐ ☐
+
+☐
+
+Cool Things My Hero Did:
+
+Equipment Acquired:
+
+Allies Met:
+                    </pre>
+                    <p class="text-right mt-4">
+                        <a href="fighter.pdf" class="text-[#d35400] hover:underline">Click here for printable version</a>
+                    </p>
+                </div>
+
+                <!-- Rogue Section -->
+                <div class="card p-6 overflow-y-auto max-h-[70vh]">
+                    <h3 class="text-2xl mb-4">Rogue</h3>
+                    <pre class="whitespace-pre-wrap text-sm font-mono leading-tight">
+--- PAGE 1 ---
+
+[Image 1]
+
+CHARACTER INFORMATION
+
+Name:
+
+Level:
+
+ROGUE
+
+The Whispers of the Ouroboros
+
+EQUIPMENT
+
+Level 2 Equipment:
+
+Experience:
+
+8 Adventures
+
+Level 3 Equipment:
+
+Armor Class:
+
+11 (+1 Dodge, +2 Assassinate)
+
+Level 4 Equipment:
+
+Hit Points:
+
+3 (+1 per level except Level 4)
+
+Speed:
+
+6 squares
+
+Attack Bonus:
+
++6
+
+COMBAT ABILITIES
+
+Primary Attack: Whirling Blades
+
+
+"Roll:
+","1d20+6 vs enemy AC
+"
+"Damage:
+","1 dagger damage (2 on natural 20)
+"
+"Range:
+","Adjacent
+"
+
+Special: Sneak Attack
+
+Deal 2 damage when flanking an enemy with an ally (3 dam-
+age with Precise Strikes).
+
+QUICK REFERENCE
+
+Your Combat Turn:
+
+1. MOVE up to 6 squares
+
+2. ATTACK Whirling Blades (1d20+6 vs AC)
+
+3. SPECIAL Sneak Attack if flanking (+2 dmg)
+
+4. ENHANCEMENT Use level ability
+Out of Combat:
+
+Stealth: Roll 10+ with advantage
+Thievery: Roll 12+ with tools
+
+Investigation: Roll 10+ to find clues.
+Acrobatics: Roll 10+ for climbing
+
+
+--- PAGE 2 ---
+
+LEVEL PROGRESSION
+
+Level 2 Enhancement (Choose One):
+
+■Dodge Roll
+
+Once per adventure: Avoid one attack completely
++1 AC when not wearing heavy armor
+
+Precise Strikes
+
+Critical hits happen on 19-20 (not just 20)
+Sneak Attack damage increases to 3 points
+
+Quick Fingers
+
+Can use thief tools to unlock doors, disable traps
+Roll 12+ to succeed on most thievery attempts
+
+Level 3 Enhancement (Choose One):
+
+Shadow Step
+
+Can teleport up to 4 squares instead of moving
+
+Can teleport through walls if you can see the other side
+
+Dirty Fighting
+
+Normal attacks can now trip enemies
+
+Choose trip or damage after you hit
+
+■Eagle Eye
+
+Can attack any enemy within 4 squares with daggers
+Sneak Attack works at range if ally is next to target
+
+Level 4 Enhancement (Choose One):
+
+Master Thief
+
+Once per adventure: Roll 15+ to steal monster's ability
+You can use their special power once this fight
+
+Assassinate
+
+First attack each fight deals double damage
+
++2 AC permanently
+
+Shadow Clone
+
+Once per adventure: Create shadow copy for 3 turns
+
+Shadow: 1d20+4 attack, 1 damage, dies in one hit
+
+EQUIPMENT PROGRESSION
+
+Level 2 Equipment (Choose One):
+Whisperknife (+1 Magic Weapon)
+So sharp it cuts through air without sound.
++1 to attack rolls
+
+■Twin Fangs (Versatile Weapon)
+
+Paired blades for quick or deep strikes.
+
+Choose +2 attack OR +1 damage each turn
+■Shadowstrike Dagger (Returning)
+Returns from the realm of shadows.
+
+Thrown weapons return automatically
+■Shadowweave Leather (Studded)
+Treated with light-bending oils.
++1 AC for light armor users
+
+■Cloak of Night Walker (Magic Cloak)
+Worn by the legendary thief.
+
++1 AC, invisible for 1 turn per adventure
+■Vial of Second Chances (Healing)
+Brewed for dangerous infiltrations.
+Restore 3 HP, single use per adventure
+
+Level 3 Equipment (Choose One):
+Flamekiss Blade (Flaming Weapon)
+Ignites when drawn in anger.
+
++1 damage, lights up dark areas
+■Spiritbane (Weapon of Smiting)
+
+Forged by undead hunters.
+
+Deal double damage vs undead/constructs
+
+■Giantpiercer (Giant Slayer)
+
+Designed to find weak spots.
+
+Deal +2 damage vs Large creatures
+Boots of Silent Steps (Speed)
+
+Make no sound while moving.
+
++2 Speed
+
+Ring of Hidden Paths (Protection)
+
+Reveals escape routes.
+
++1 AC, +1 to saving rolls
+
+Kit of Useful Things (Bag of Tricks)
+
+Contains treats for helpful creatures.
+
+Summon helpful animal for 3 turns per adventure
+
+Level 4 Equipment (Choose One):
+
+Blade of Legends (Artifact)
+
+Once wielded by the master thief.
+
++2 attack, +1 damage, unique stealth power
+
+Armor of Shadow Guild (Heroic)
+
+Elite organization membership.
+
++2 AC, immunity to fear/charm effects
+Coin of Lucky Breaks (Talisman)
+Always lands in your favor.
+Reroll any one die per adventure
+
+
+--- PAGE 3 ---
+
+THIEF TOOLS REFERENCE
+
+Lock Picking: Roll 12+ to open doors, chests, shackles
+Trap Disarmament: Roll 12+ to safely disable traps
+Sleight of Hand: Roll 12+ to pickpocket or plant items
+
+COMBAT TIPS
+
+Position yourself to flank enemies with allies for Sneak Attack
+Your high speed lets you get into perfect position each turn
+Stay away from tough enemies you're fragile but deadly
+Use terrain and stealth to your advantage
+
+ADVENTURE LOG
+
+Adventures Completed:
+
+Cool Things My Hero Did:
+
+Secrets Discovered:
+
+Treasures Found:
+                    </pre>
+                    <p class="text-right mt-4">
+                        <a href="rogue.pdf" class="text-[#d35400] hover:underline">Click here for printable version</a>
+                    </p>
+                </div>
+
+                <!-- Shaman Section -->
+                <div class="card p-6 overflow-y-auto max-h-[70vh]">
+                    <h3 class="text-2xl mb-4">Shaman</h3>
+                    <pre class="whitespace-pre-wrap text-sm font-mono leading-tight">
+--- PAGE 1 ---
+
+[Image 1]
+
+SHAMAN
+
+The Whispers of the Ouroboros
+
+CHARACTER INFORMATION
+
+
+"Name:
+",
+"Level
+
+
+:
+",
+"Experience:
+","8 Adventures
+"
+"Armor Class:
+","10 (+1 with Nature's Ally in outdoors
+"
+"Hit Points:
+","6 (+1 per level except Level 4)
+"
+"Speed:
+","5 squares
+"
+"Attack Bonus:
+","+3 (+1 with Ancestor's Wisdom)
+"
+
+EQUIPMENT
+
+Level 2 Equipment:
+
+Level 3 Equipment:
+
+Level 4 Equipment:
+
+) QUICK REFERENCE
+
+COMBAT ABILITIES
+
+Primary Attack: Vengeful Spirits
+
+Roll:
+
+Damage:
+
+Range:
+
+Spirit Weapon)
+
+1d20+3 vs enemy AC
+
+1 spirit damage (2 on natural 20)
+
+6 squares (no line of sight needed with
+
+Special Ability: Spectral Shackles
+
+When you miss with your first attack each turn, roll 1d20.
+On 11+, the target is immobilized until your next turn.
+
+Your Combat Turn:
+
+1. MOVE up to 5 squares (or command spirit companion)
+2. ATTACK with Vengeful Spirits $(1d20+3~vs~AC$, Range
+6)
+
+3. SPECIAL Spectral Shackles on missed first attacks (roll
+11+ to immobilize)
+
+4. ENHANCEMENT Use your chosen level ability if ap-
+plicable
+
+Out of Combat Actions:
+
+Nature Lore: Knowledge about plants, animals, weather
+- roll 10+ to succeed
+
+Spirit Communication: Speak with ghosts, spirits, an-
+cestors
+
+Healing: Tend wounds, cure diseases with natural reme-
+dies
+
+Animal Handling: Calm beasts, ride animals - roll 10+
+to succeed
+
+Ritual Magic: Ceremonies for blessings, guidance, pro-
+tection
+
+
+--- PAGE 2 ---
+
+LEVEL PROGRESSION
+
+Level 2 Enhancement (Choose One):
+
+■Spirit Guide
+
+Gain animal spirit companion (wolf, eagle, or bear
+spirit)
+
+- Companion: AC 12, 3 HP, Speed 6. Attack 1d20+2 for
+1 damage
+
+Healing Spirits
+
+Can heal an ally for 2 HP once per adventure
+
+Range: Touch any adjacent ally
+
+Ancestor's Wisdom
+
+Once per adventure: Ask "the spirits" for advice (DM
+
+gives helpful hint)
+
+$-+1$ to attack rolls when using spiritual powers
+
+Level 3 Enhancement (Choose One):
+
+Nature's Ally
+
+Can speak with animals and plants for information
+
+In outdoor areas: +1 AC and +1 to attack (nature
+
+protects you)
+
+■Spirit Weapon
+
+Vengeful Spirits can hit any target within 4 squares
+- No longer need line of sight (spirits find the target)
+
+■Protective Ward
+
+- Grant +2 AC to one ally for 3 turns, once per
+adventure
+
+Ward also prevents first instance of being
+stunned/immobilized
+
+Level 4 Enhancement (Choose One):
+
+Great Spirit
+
+Spirit companion becomes powerful: AC 14, 5 HP, can
+use your special abilities
+
+- If companion dies, resummon next adventure
+
+Spirit Storm
+
+Once per adventure: All enemies within 3 squares take
+1 spirit damage
+
+Survivors are shackled (can't move next turn)
+
+■Ancestral Champion
+
+- Channel ancestor spirit for 3 turns once per adventure
+- While channeling: +3 to attack, +1 damage, can cast
+any shaman ability
+
+SPIRIT COMPANION STATS
+
+EQUIPMENT PROGRESSION
+
+Level 2 Equipment (Choose One):
+
+Spiritbond Staff (+1 Magic Weapon)
+
+Carved from wood where ancient spirits once dwelled.
++1 to attack rolls
+
+■Totem of Dual Aspects (Versatile Weapon)
+Can channel either peaceful or wrathful spirits.
+Choose +2 attack OR +1 damage each turn
+
+■Boomerang of the Wind Spirits (Returning
+Weapon)
+
+Blessed by air elementals to always return home.
+Thrown weapons return automatically
+
+Hide of the Spirit Bear (Studded Leather)
+
+Taken with permission from a bear that became a
+guardian spirit.
+
++1 AC for light armor users
+
+■Cloak of the Ethereal Realm (Magic Cloak)
+
+Allows the wearer to briefly step into the spirit world.
++1 AC, once per adventure become invisible for 1 turn
+Elixir of Life Force (Healing Potion)
+
+Contains the healing energy of benevolent spirits.
+Restore 3 HP, single use per adventure
+
+Level 3 Equipment (Choose One):
+
+■Staff of Sacred Flames (Flaming Weapon)
+Burns with the fire of purification ceremonies.
++1 damage, lights up dark areas
+
+■Banishing Rod (Weapon of Smiting)
+Carved with symbols that send undead back to rest.
+Deal double damage vs undead/constructs
+■Club of Giant's Bane (Giant Slayer)
+
+Made from the thighbone of a defeated giant.
+Deal +2 damage vs Large creatures
+
+■Moccasins of the Swift Deer (Boots of Speed)
+Allow you to run as gracefully as forest creatures.
++2 Speed
+
+Ring of Natural Harmony (Ring of Protection)
+Keeps you in balance with the natural world.
+
++1 AC, +1 to saving rolls
+
+■Medicine Bundle (Bag of Tricks)
+
+Contains herbs and totems that call forest friends.
+Once per adventure, summon helpful animal for 3 turns
+
+Level 4 Equipment (Choose One):
+
+Staff of the Tribal Elder (Artifact Weapon)
+Passed down by the greatest shamans in history.
++2 attack, +1 damage, unique spirit power
+
+
+"Name:
+",
+"Type:
+","Wolf Eagle Bear
+"
+"AC:
+","12 (14 with Great Spirit)
+"
+"HP:
+","3 (5 with Great Spirit)
+"
+"Speed:
+","6
+"
+"Attack:
+","1d20+2, 1 damage
+"
+
+Robes of the Spirit Walker (Armor of Heroes)
+Worn by those who bridge the world of living and dead.
++2 AC, immunity to fear/charm effects
+
+■Dreamcatcher of Fate (Talisman of Fortune)
+Woven to catch good fortune while sleeping.
+
+Reroll any one die per adventure (keep better result)
+
+
+--- PAGE 3 ---
+
+NATURE & SPIRIT REFERENCE
+
+Animal Speech: Can communicate basic ideas with natural animals
+Plant Growth: Can encourage plants to grow or part for passage
+Spirit Sight: Can see invisible spirits and detect undead presence
+Weather Sense: Always know if storms or weather changes are coming
+
+COMBAT TIPS
+
+Stay at range your attacks work from 6 squares away
+Use Spectral Shackles to control dangerous enemies
+Your spirit companion can flank enemies for your allies
+Support your team with healing and protective abilities
+
+ADVENTURE LOG
+
+Adventures Completed:
+
+Cool Things My Hero Did:
+
+Spirits Contacted:
+
+Nature Allies Met:
+                    </pre>
+                    <p class="text-right mt-4">
+                        <a href="shaman.pdf" class="text-[#d35400] hover:underline">Click here for printable version</a>
+                    </p>
+                </div>
+
+                <!-- Wizard Section -->
+                <div class="card p-6 overflow-y-auto max-h-[70vh]">
+                    <h3 class="text-2xl mb-4">Wizard</h3>
+                    <pre class="whitespace-pre-wrap text-sm font-mono leading-tight">
+--- PAGE 1 ---
+
+[Image 1]
+
+WIZARD
+
+The Whispers of the Ouroboros
+
+CHARACTER INFORMATION
+
+EQUIPMENT
+
+Level 2 Equipment:
+
+Level 3 Equipment:
+
+Level 4 Equipment:
+
+7 (+3 with Shield Spell, +2 with Master QUICK REFERENCE
+
+Name:
+
+Level:
+
+Experience:
+
+8 Adventures
+
+Armor Class:
+
+of Elements)
+
+Hit Points:
+
+4 (+1 per level except Level 4)
+
+Speed:
+
+4 squares
+
+Attack Bonus:
+
++7 (+1 with Mystic Recovery)
+
+COMBAT ABILITIES
+
+Primary Attack: Fireball
+
+Roll:
+
+1d20+7 vs enemy AC
+
+Damage:
+
+Range:
+
+6 squares
+
+1 fire damage (2 on natural 20)
+
+Special Ability: Blastwave
+
+When you successfully attack, roll 1d20. On 10+ (8+ with
+enhancement), hit all adjacent enemies for 1 damage.
+
+Your Combat Turn:
+
+1. MOVE up to 4 squares (or teleport with enhancement)
+2. ATTACK with Fireball/chosen spell (1d20+7 vs AC,
+Range 6)
+
+3. SPECIAL Blastwave on successful attacks (roll 10+ to
+hit adjacent enemies)
+
+4. ENHANCEMENT Use your chosen level ability if ap-
+plicable
+
+Out of Combat Actions:
+
+Arcana: Identify magic items, understand spells roll
+10+ to succeed with advantage
+
+Investigation: Use magic to reveal hidden things roll
+10+ to succeed
+
+History: Knowledge of ancient lore, magical history - roll
+10+ to succeed
+
+Utility Magic: Light, detect magic, mage hand for small
+tasks
+
+Ritual Magic: Complex spells that take time but don't
+cost spell slots
+
+
+--- PAGE 2 ---
+
+LEVEL PROGRESSION
+
+Level 2 Enhancement (Choose One):
+
+■Shield Spell
+
+- Cast "magic armor" on self: +3 AC for 3 turns, once
+per adventure
+
+- Learn one utility spell (light, detect magic, etc.)
+
+Spell Variety
+
+- Learn Ice Shard or Lightning Bolt as second attack type
+Can choose which damage type to use each attack
+
+■Mystic Recovery
+
+Once per adventure: Regain 2 HP by meditating for
+one turn
+
+$-+1$ to attack rolls with all spells
+
+Level 3 Enhancement (Choose One):
+
+■Spell Mastery
+
+Blastwave now triggers on 8+ instead of 10+
+
+Can choose to deal 2 damage to primary target OR
+
+trigger blastwave (not both)
+
+■Teleport
+
+Can teleport instead of moving normally
+
+Range: Up to 6 squares, must see destination
+
+■Counterspell
+
+Can attempt to stop enemy special abilities
+
+- Roll 1d20+7; if higher than enemy's roll, their special
+ability fails
+
+Level 4 Enhancement (Choose One):
+■Archmage
+
+Can cast two different spells per turn (move + spell +
+spell)
+
+Learn "Meteor": Once per adventure, 1d20+10 vs all
+
+enemies, 2 damage each
+
+Master of Elements
+
+- All spells deal +1 damage
+
+Can change damage type to bypass resistances
+
+-+2 AC permanently (magical protection)
+
+Reality Bender
+
+- Once per adventure: "Rewrite" one die roll (yours or
+ally's)
+
+- Can cast any previous wizard enhancement ability once
+per adventure
+
+SPELL VARIETY OPTIONS
+
+Choose Your Second Spell (if you took Spell Vari-
+ety):
+
+■Ice Shard
+
+Damage Type: Cold
+
+Special: Can freeze water, put out fires
+
+Lightning Bolt
+
+Damage Type: Electric
+
+Special: Can power magical devices, conduct through
+metal
+
+EQUIPMENT PROGRESSION
+
+Level 2 Equipment (Choose One):
+
+■Wand of Arcane Might (+1 Magic Weapon)
+Carved from a tree struck by magical lightning.
++1 to attack rolls
+
+■Staff of Dual Elements (Versatile Weapon)
+Channels either raw power or precise control.
+Choose +2 attack OR +1 damage each turn
+■Orb of Returning Force (Returning Weapon)
+Magical energies always return to their source.
+Thrown weapons return automatically
+
+Robes of Minor Warding (Studded Leather)
+Embroidered with protective runes by academy students.
++1 AC for light armor users
+
+Cloak of the Void Walker (Magic Cloak)
+Allows brief passage through dimensional space.
+
++1 AC, once per adventure become invisible for 1 turn
+■Potion of Magical Restoration (Healing Potion)
+Infused with healing magic by temple clerics.
+
+Restore 3 HP, single use per adventure
+
+Level 3 Equipment (Choose One):
+
+Rod of Endless Flame (Flaming Weapon)
+
+Contains a fragment of elemental fire that never dies.
++1 damage, lights up dark areas
+
+■Scepter of Disruption (Weapon of Smiting)
+Designed specifically to unravel undead magic.
+Deal double damage vs undead/constructs
+■Wand of Giant's Doom (Giant Slayer)
+Channels magic that grows stronger against larger foes.
+
+Deal +2 damage vs Large creatures
+
+■Boots of Arcane Swiftness (Boots of Speed)
+Enchanted to carry wizards quickly from danger.
++2 Speed
+
+Ring of Magical Defense (Ring of Protection)
+Strengthens both magical and physical defenses.
+
++1 AC, +1 to saving rolls
+
+■Familiar's Pouch (Bag of Tricks)
+
+Contains treats that summon magical creatures to help.
+Once per adventure, summon helpful animal for 3 turns
+
+Level 4 Equipment (Choose One):
+
+Staff of the Archmage (Artifact Weapon)
+
+Once belonged to the founder of the first magic academy.
++2 attack, +1 damage, unique arcane power
+Robes of the High Wizard (Armor of Heroes)
+Woven from threads of pure magical energy.
++2 AC, immunity to fear/charm effects
+
+■Amulet of Fate's Design (Talisman of Fortune)
+Contains a spell that bends probability itself.
+
+Reroll any one die per adventure (keep better result)
+
+
+--- PAGE 3 ---
+
+UTILITY SPELLS REFERENCE
+
+Light: Create magical illumination for 1 hour
+Detect Magic: See magical auras and enchantments
+Mage Hand: Move small objects from a distance
+Prestidigitation: Minor magical effects for convenience
+Read Magic: Understand magical writing and symbols
+
+COMBAT TIPS
+
+Stay at maximum range (6 squares) you're very fragile
+Use Blastwave to hit multiple enemies when they cluster
+Save enhancement abilities for crucial moments
+
+Position yourself where you can hit multiple enemies with area effects
+
+ADVENTURE LOG
+
+Adventures Completed:
+
+Cool Things My Hero Did:
+
+Spells Learned:
+
+Magic Items Discovered:
+                    </pre>
+                    <p class="text-right mt-4">
+                        <a href="wizard.pdf" class="text-[#d35400] hover:underline">Click here for printable version</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Modal for Character/Location/Lore Details -->
@@ -383,6 +1850,9 @@
         initAtlas();
         initLore();
         initToolkit();
+        // Initialize the new player toolkit view
+        // No specific JS init function needed for static content, but keep for consistency
+        // initPlayerToolkit(); 
     });
 
     function initDashboard() {
@@ -781,7 +2251,7 @@
   { term: 'Ouroboros', def: 'The primary symbol of the Cult of the Ouroboros, representing a snake eating its own tail, symbolizing their twisted view of death and rebirth into undeath.' },
   { term: 'Pelor', def: 'The god of the sun, healing, and truth, whose temple in Beechburton serves as a safe haven and source of divine insight.' },
   { term: 'Phylactery', def: 'An artifact containing a lich\'s soul, making them nearly immortal. Kaelen\'s must be destroyed to defeat him permanently.' },
-  { term: 'Precise Strikes', def: 'A Level 2 Rogue enhancement that makes critical hits occur on 19-20 and increases Sneak Attack damage to 3 points.' },
+  { term: 'Precise Strikes', def: 'A Level 2 Rogue enhancement that makes critical hits occur on 19-20 (not just 20) and increases Sneak Attack damage to 3 points.' },
   { term: 'Professor Winsome Landy', def: 'A naive but intelligent Halfling scholar, quest giver for "Horror at Havel\'s Cross," who becomes a vital long-term ally and lore source.' },
   { term: 'Protective Ward', def: 'A Level 3 Shaman enhancement allowing the character to grant +2 AC to one ally for 3 turns once per adventure, also preventing the first instance of stun/immobilization.' },
   { term: 'Quick Fingers', def: 'A Level 2 Rogue enhancement allowing the character to use thief tools to unlock doors and disable traps with a 12+ roll.' },
