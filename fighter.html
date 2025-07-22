@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schmitt the Fighter Character Sheet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .page-break {
+            page-break-after: always;
+        }
+        .character-sheet {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 8.5in; /* Standard letter width for printing */
+            min-height: 11in; /* Standard letter height for printing */
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            /* Ensure content doesn't break across pages */
+            break-inside: avoid;
+        }
+        .section-header {
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 2px solid;
+        }
+        .hp-circle {
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #666;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #666;
+            flex-shrink: 0; /* Prevent circles from shrinking */
+        }
+        .hp-circle.filled {
+            background-color: #ef4444; /* Red for lost HP */
+            border-color: #dc2626;
+            color: #fff;
+        }
+        .stat-box {
+            background-color: #f8f8f8;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+        }
+        .stat-label {
+            font-weight: 700;
+            color: #4a4a4a;
+        }
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: #1a1a1a;
+        }
+        .enhancement-item {
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .enhancement-item:last-child {
+            border-bottom: none;
+        }
+        .enhancement-title {
+            font-weight: 700;
+            color: #333;
+        }
+        .enhancement-description {
+            font-size: 0.875rem;
+            color: #555;
+        }
+        .tip-box {
+            background-color: #fef2f2; /* Light red for fighter theme */
+            border-left: 4px solid #b91c1c; /* Darker red border */
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .tip-box strong {
+            color: #991b1b; /* Darker red for bold text in tip boxes */
+            font-weight: 700;
+        }
+        .archetype-icon {
+            display: inline-block;
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        /* Specific styles for fighter theme */
+        .fighter-theme .section-header { border-color: #b91c1c; color: #b91c1c; }
+        .fighter-theme .hp-circle { border-color: #b91c1c; color: #b91c1c; }
+        .fighter-theme .hp-circle.filled { background-color: #b91c1c; border-color: #991b1b; }
+        .fighter-theme .stat-label { color: #b91c1c; }
+
+
+        /* Print-specific styles */
+        @media print {
+            body {
+                background-color: #fff;
+            }
+            .character-sheet {
+                box-shadow: none;
+                border: 1px solid #ccc; /* Add a subtle border for print */
+                margin: 0.5in auto; /* Adjust margins for print */
+            }
+            .page-break {
+                page-break-after: always;
+            }
+            /* Ensure sections don't break across pages */
+            .character-sheet > div {
+                break-inside: avoid;
+            }
+            .section-content {
+                break-inside: avoid;
+            }
+            .enhancement-list {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fighter Character Sheet - Page 1 -->
+    <div class="character-sheet fighter-theme">
+        <h1 class="text-4xl font-bold text-center mb-4 text-red-700">
+            <span class="archetype-icon">🛡️</span>Schmitt the Fighter
+        </h1>
+        <p class="text-center text-gray-600 mb-2 italic">"I am the shield that protects, the sword that strikes!"</p>
+        <p class="text-center text-gray-700 text-sm mb-8">A stalwart protector, always ready to defend their allies.</p>
+
+        <div class="flex flex-col md:flex-row gap-6 flex-grow">
+            <!-- Left Column: Character Info & Stats -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <!-- Hero Details -->
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Hero Details</h2>
+                    <div class="stat-box">
+                        <span class="stat-label">Name:</span>
+                        <span class="stat-value">Schmitt</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Class:</span>
+                        <span class="stat-value">Fighter</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Level:</span>
+                        <span class="stat-value">1</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Basic Weapon:</span>
+                        <span class="stat-value">Longsword (1 damage)</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Starting Gear:</span>
+                        <span class="stat-value">Chain mail, Shield, Backpack, 20 Gold, 1 Healing Potion</span>
+                    </div>
+                </div>
+
+                <!-- HP & Stats -->
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Health & Stats</h2>
+                    <div class="stat-box">
+                        <span class="stat-label">Hit Points (HP):</span>
+                        <div class="flex flex-wrap justify-end">
+                            <!-- Max HP for Fighter at Level 20 is 37. Adding a few extra for enhancements. -->
+                            <div class="hp-circle">1</div><div class="hp-circle">2</div><div class="hp-circle">3</div><div class="hp-circle">4</div><div class="hp-circle">5</div><div class="hp-circle">6</div><div class="hp-circle">7</div><div class="hp-circle">8</div><div class="hp-circle">9</div><div class="hp-circle">10</div><div class="hp-circle">11</div><div class="hp-circle">12</div><div class="hp-circle">13</div><div class="hp-circle">14</div><div class="hp-circle">15</div><div class="hp-circle">16</div><div class="hp-circle">17</div><div class="hp-circle">18</div><div class="hp-circle">19</div><div class="hp-circle">20</div><div class="hp-circle">21</div><div class="hp-circle">22</div><div class="hp-circle">23</div><div class="hp-circle">24</div><div class="hp-circle">25</div><div class="hp-circle">26</div><div class="hp-circle">27</div><div class="hp-circle">28</div><div class="hp-circle">29</div><div class="hp-circle">30</div><div class="hp-circle">31</div><div class="hp-circle">32</div><div class="hp-circle">33</div><div class="hp-circle">34</div><div class="hp-circle">35</div><div class="hp-circle">36</div><div class="hp-circle">37</div><div class="hp-circle"></div><div class="hp-circle"></div><div class="hp-circle"></div>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Armor Class (AC):</span>
+                        <span class="stat-value">13</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Speed:</span>
+                        <span class="stat-value">5 squares</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Attack Bonus:</span>
+                        <span class="stat-value">+4</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Combat Quick Reference -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <!-- Combat Quick Reference -->
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Combat Quick Reference</h2>
+                    <div class="tip-box">
+                        <strong>Your Turn:</strong>
+                        <ol class="list-decimal list-inside ml-2">
+                            <li><strong>Move:</strong> Up to your Speed (count squares).</li>
+                            <li><strong>Attack:</strong> Roll 1d20 + Attack Bonus. Hit if total >= enemy AC.</li>
+                            <li><strong>Special Power:</strong> Use your unique power (if ready).</li>
+                            <li><strong>Enhancement:</strong> Use one active ability from leveling up.</li>
+                        </ol>
+                    </div>
+                    <div class="tip-box">
+                        <strong>Special Power: Charge</strong><br>
+                        Move your full speed and then make an attack that deals +2 additional damage!
+                    </div>
+                    <div class="tip-box">
+                        <strong>Critical Hit:</strong> If you roll a natural 20 on your attack die, you deal DOUBLE damage! BOOM!
+                    </div>
+                    <div class="tip-box">
+                        <strong>Taking Damage:</strong> Cross off HP circles.
+                    </div>
+                    <div class="tip-box">
+                        <strong>Defeated (0 HP):</strong> You fall unconscious, but don't worry! You come back next round with half HP, ready to fight again!
+                    </div>
+                    <div class="tip-box">
+                        <strong>Healing:</strong> Erase crossed-off HP circles.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Fighter Character Sheet - Page 2 (Out of Combat, Inventory, Notes, Heroic Deeds) -->
+    <div class="character-sheet fighter-theme">
+        <h1 class="text-4xl font-bold text-center mb-4 text-red-700">
+            <span class="archetype-icon">🛡️</span>Schmitt the Fighter - Utility & Narrative
+        </h1>
+        <p class="text-center text-gray-700 text-sm mb-8">Your skills outside of battle and your unfolding story!</p>
+
+        <div class="flex flex-col md:flex-row gap-6 flex-grow">
+            <!-- Left Column: Out of Combat Actions -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Out of Combat Actions</h2>
+                    <p class="mb-4 text-sm text-gray-700">When you're not fighting, try these ideas if you're stuck!</p>
+                    <div class="tip-box">
+                        <strong>Explore:</strong> Look around carefully for clues, hidden paths, or interesting things. (Roll 10+ for normal, 15+ for hard)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Search:</strong> Actively look for hidden items, traps, or secret doors. (Roll 10+ for normal, 15+ for hard)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Talk/Persuade:</strong> Try to convince someone, get information, or make friends. (Roleplay what you say! DM will tell you if it works.)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Investigate:</strong> Examine something closely to learn more about it. (Roll 10+ for normal, 15+ for hard)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Help/Assist:</strong> Work with a friend to make their task easier. (DM might give them a bonus!)
+                    </div>
+                    <h3 class="font-bold mt-4 mb-2 text-red-700">Fighter Specific Actions:</h3>
+                    <div class="tip-box">
+                        <strong>Train:</strong> Practice your fighting skills. (DM might give you a small bonus or hint for your next combat!)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Guard:</strong> Stand watch and protect your friends. (DM might let you act first in an ambush or spot danger early!)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Repair Gear:</strong> Fix your armor or weapons. (DM might let you restore a temporary AC loss or weapon damage!)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Inventory, Notes, Heroic Deeds -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <!-- Inventory & Gold -->
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Inventory & Gold</h2>
+                    <div class="stat-box">
+                        <span class="stat-label">Gold:</span>
+                        <span class="stat-value">20</span>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 min-h-[8rem] flex-grow">
+                        <p class="text-sm text-gray-600 mb-2 font-semibold">Items:</p>
+                        <ul class="list-disc list-inside text-sm text-gray-700">
+                            <li>Chain mail</li>
+                            <li>Shield</li>
+                            <li>Backpack</li>
+                            <li>1 Healing Potion</li>
+                            <li>Longsword</li>
+                            <!-- Add more items here -->
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Adventure Notes / Story So Far -->
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Adventure Notes / Story So Far</h2>
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 min-h-[10rem] flex-grow">
+                        <p class="text-sm text-gray-600 italic">Write down important clues, friendly faces, or what happened last!</p>
+                        <!-- Space for notes -->
+                    </div>
+                </div>
+
+                <!-- Heroic Deeds / Special Training -->
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Heroic Deeds / Special Training</h2>
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 min-h-[8rem] flex-grow">
+                        <p class="text-sm text-gray-600 italic">Record unique abilities or boons gained from your adventures!</p>
+                        <!-- Space for notes -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Fighter Character Sheet - Page 3 (Enhancements & Milestone Equipment) -->
+    <div class="character-sheet fighter-theme">
+        <h1 class="text-4xl font-bold text-center mb-4 text-red-700">
+            <span class="archetype-icon">🛡️</span>Schmitt the Fighter - Enhancements & Progression
+        </h1>
+        <p class="text-center text-gray-700 text-sm mb-8">Master your combat prowess and lead your allies!</p>
+
+        <div class="flex flex-col md:flex-row gap-6 flex-grow">
+            <!-- Left Column: Enhancements Tier 1 & 2 -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Tier 1 Enhancements (Levels 1-5)</h2>
+                    <div class="enhancement-list">
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Shield Master</h3>
+                            <p class="enhancement-description">+1 AC permanently. You're even harder to hit!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Weapon Expert</h3>
+                            <p class="enhancement-description">+1 attack bonus permanently with your favored weapon (e.g., Longsword). Your strikes are more accurate!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Tough Fighter</h3>
+                            <p class="enhancement-description">+2 HP instead of +1 this level. You're an absolute tank!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Battle Surge</h3>
+                            <p class="enhancement-description">Once per adventure, you can take an extra attack immediately after your normal attack. Unleash a powerful combo!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Defensive Stance</h3>
+                            <p class="enhancement-description">Once per adventure, you can gain +3 AC until your next turn. Brace for impact!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Tier 2 Enhancements (Levels 6-10)</h2>
+                    <div class="enhancement-list">
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Advanced Shield</h3>
+                            <p class="enhancement-description">+2 AC when using a shield (requires Shield Master). This stacks for formidable defense!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Weapon Mastery</h3>
+                            <p class="enhancement-description">Critical hits on a roll of 19 or 20 (requires Weapon Expert). Your hits are truly devastating!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Combat Reflexes</h3>
+                            <p class="enhancement-description">Once per round, you can make an attack against an enemy who moves adjacent to you. Punish foes who try to get past you!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Guardian</h3>
+                            <p class="enhancement-description">Any adjacent allies (heroes or friendly creatures) gain +1 AC. You become a living shield!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Charge Attack</h3>
+                            <p class="enhancement-description">Your Charge special power now deals +1 additional damage (total +3 damage). Your signature move becomes even more impactful!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Enhancements Tier 3 & 4, Master, Milestone Equipment -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Tier 3 Enhancements (Levels 11-15)</h2>
+                    <div class="enhancement-list">
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Shield Slam</h3>
+                            <p class="enhancement-description">Use your shield as a weapon (1 damage, +1 attack bonus), and knock enemies down (they lose their next move action) on a hit. Control the battlefield with your shield!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Weapon Hurricane</h3>
+                            <p class="enhancement-description">Once per adventure, you can attack all enemies adjacent to you. A powerful crowd-clearing ability!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Armor Expertise</h3>
+                            <p class="enhancement-description">+1 AC permanently, and you ignore the first point of damage taken in each combat encounter. Incredibly resilient!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Battle Leader</h3>
+                            <p class="enhancement-description">All allies get +1 to their next attack after you hit an enemy. Inspire your team to strike harder!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Unstoppable</h3>
+                            <p class="enhancement-description">Once per adventure, you can ignore all damage for one full round. An unbreakable wall!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Tier 4 Enhancements (Levels 16-19)</h2>
+                    <div class="enhancement-list">
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Master Guardian</h3>
+                            <p class="enhancement-description">Allies within 2 squares of you get +2 AC. Your protective aura expands and strengthens!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Legendary Weapon</h3>
+                            <p class="enhancement-description">Your favored weapon deals an additional +1 damage permanently (total +2 from Weapon Expert + Legendary Weapon). An extension of your heroic will!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Perfect Defense</h3>
+                            <p class="enhancement-description">Once per adventure, you can become unhittable for one round. No attack can touch you!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Inspiring Strike</h3>
+                            <p class="enhancement-description">Critical hits from you give all allies +2 to their next attack. Your triumphs elevate the entire party!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Level 20 Master Enhancement: Legendary Guardian</h2>
+                    <p class="enhancement-description">
+                        Schmitt becomes <strong>UNDEFEATABLE</strong> for one full combat per adventure - all attacks automatically miss him, and he heals 2 HP at the start of each turn.
+                        He can <strong>protect the entire party</strong> - any damage dealt to allies within 3 squares gets redirected to him instead (and he still takes no damage during his undefeatable turn!).
+                        His presence is so inspiring that <strong>all allies get +3 to everything</strong> (attacks, AC, damage) while he's conscious.
+                    </p>
+                </div>
+
+                <!-- Milestone Equipment -->
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Milestone Equipment</h2>
+                    <p class="mb-4 text-sm text-gray-700">Your gear gets stronger as you become more legendary!</p>
+                    <div class="tip-box">
+                        <strong>Level 5: Heroic Gear</strong><br>
+                        All your weapons deal +1 damage permanently. All your armor grants +1 AC permanently.
+                    </div>
+                    <div class="tip-box">
+                        <strong>Level 10: Champion's Arsenal</strong><br>
+                        All your weapons deal an *additional* +1 damage (total +2). All your armor grants an *additional* +1 AC (total +2).
+                    </div>
+                    <div class="tip-box">
+                        <strong>Level 15: Legendary Equipment</strong><br>
+                        All your weapons deal an *additional* +1 damage (total +3). All your armor grants an *additional* +1 AC (total +3).
+                    </div>
+                    <div class="tip-box">
+                        <strong>Level 20: Artifact Mastery</strong><br>
+                        All your weapons deal an *additional* +1 damage (total +4). All your armor grants an *additional* +1 AC (total +4).
+                    </div>
+                    <p class="mt-4 text-sm text-gray-700 italic">Your DM will also give you special magical items at these levels!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

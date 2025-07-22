@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mosley the Wizard Character Sheet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .page-break {
+            page-break-after: always;
+        }
+        .character-sheet {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 8.5in; /* Standard letter width for printing */
+            min-height: 11in; /* Standard letter height for printing */
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            /* Ensure content doesn't break across pages */
+            break-inside: avoid;
+        }
+        .section-header {
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 2px solid;
+        }
+        .hp-circle {
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #666;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #666;
+            flex-shrink: 0; /* Prevent circles from shrinking */
+        }
+        .hp-circle.filled {
+            background-color: #ef4444; /* Red for lost HP */
+            border-color: #dc2626;
+            color: #fff;
+        }
+        .stat-box {
+            background-color: #f8f8f8;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+        }
+        .stat-label {
+            font-weight: 700;
+            color: #4a4a4a;
+        }
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: #1a1a1a;
+        }
+        .enhancement-item {
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .enhancement-item:last-child {
+            border-bottom: none;
+        }
+        .enhancement-title {
+            font-weight: 700;
+            color: #333;
+        }
+        .enhancement-description {
+            font-size: 0.875rem;
+            color: #555;
+        }
+        .tip-box {
+            background-color: #eef2ff; /* Light indigo for wizard theme */
+            border-left: 4px solid #4338ca; /* Darker indigo border */
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .tip-box strong {
+            color: #312e81; /* Darker indigo for bold text in tip boxes */
+            font-weight: 700;
+        }
+        .archetype-icon {
+            display: inline-block;
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        /* Specific styles for wizard theme */
+        .wizard-theme .section-header { border-color: #4338ca; color: #4338ca; }
+        .wizard-theme .hp-circle { border-color: #4338ca; color: #4338ca; }
+        .wizard-theme .hp-circle.filled { background-color: #4338ca; border-color: #3730a3; }
+        .wizard-theme .stat-label { color: #4338ca; }
+
+        /* Print-specific styles */
+        @media print {
+            body {
+                background-color: #fff;
+            }
+            .character-sheet {
+                box-shadow: none;
+                border: 1px solid #ccc; /* Add a subtle border for print */
+                margin: 0.5in auto; /* Adjust margins for print */
+            }
+            .page-break {
+                page-break-after: always;
+            }
+            /* Ensure sections don't break across pages */
+            .character-sheet > div {
+                break-inside: avoid;
+            }
+            .section-content {
+                break-inside: avoid;
+            }
+            .enhancement-list {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Wizard Character Sheet - Page 1 -->
+    <div class="character-sheet wizard-theme">
+        <h1 class="text-4xl font-bold text-center mb-4 text-indigo-700">
+            <span class="archetype-icon">✨</span>Mosley the Wizard
+        </h1>
+        <p class="text-center text-gray-600 mb-2 italic">"By the power of ancient words, I command reality!"</p>
+        <p class="text-center text-gray-700 text-sm mb-8">A fragile but incredibly powerful spellcaster, bending reality to their will.</p>
+
+        <div class="flex flex-col md:flex-row gap-6 flex-grow">
+            <!-- Left Column: Character Info & Stats -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <!-- Hero Details -->
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Hero Details</h2>
+                    <div class="stat-box">
+                        <span class="stat-label">Name:</span>
+                        <span class="stat-value">Mosley</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Class:</span>
+                        <span class="stat-value">Wizard</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Level:</span>
+                        <span class="stat-value">1</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Basic Weapon:</span>
+                        <span class="stat-value">Magic missiles (1 damage, ranged)</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Starting Gear:</span>
+                        <span class="stat-value">Robes, Spellbook, Backpack, 20 Gold, 1 Healing Potion</span>
+                    </div>
+                </div>
+
+                <!-- HP & Stats -->
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Health & Stats</h2>
+                    <div class="stat-box">
+                        <span class="stat-label">Hit Points (HP):</span>
+                        <div class="flex flex-wrap justify-end">
+                            <!-- Max HP for Wizard at Level 20 is 35. Adding a few extra for enhancements. -->
+                            <div class="hp-circle">1</div><div class="hp-circle">2</div><div class="hp-circle">3</div><div class="hp-circle">4</div><div class="hp-circle">5</div><div class="hp-circle">6</div><div class="hp-circle">7</div><div class="hp-circle">8</div><div class="hp-circle">9</div><div class="hp-circle">10</div><div class="hp-circle">11</div><div class="hp-circle">12</div><div class="hp-circle">13</div><div class="hp-circle">14</div><div class="hp-circle">15</div><div class="hp-circle">16</div><div class="hp-circle">17</div><div class="hp-circle">18</div><div class="hp-circle">19</div><div class="hp-circle">20</div><div class="hp-circle">21</div><div class="hp-circle">22</div><div class="hp-circle">23</div><div class="hp-circle">24</div><div class="hp-circle">25</div><div class="hp-circle">26</div><div class="hp-circle">27</div><div class="hp-circle">28</div><div class="hp-circle">29</div><div class="hp-circle">30</div><div class="hp-circle">31</div><div class="hp-circle">32</div><div class="hp-circle">33</div><div class="hp-circle">34</div><div class="hp-circle">35</div><div class="hp-circle"></div><div class="hp-circle"></div><div class="hp-circle"></div>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Armor Class (AC):</span>
+                        <span class="stat-value">7</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Speed:</span>
+                        <span class="stat-value">4 squares</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Attack Bonus:</span>
+                        <span class="stat-value">+7</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Combat Quick Reference -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <!-- Combat Quick Reference -->
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Combat Quick Reference</h2>
+                    <div class="tip-box">
+                        <strong>Your Turn:</strong>
+                        <ol class="list-decimal list-inside ml-2">
+                            <li><strong>Move:</strong> Up to your Speed (count squares).</li>
+                            <li><strong>Attack:</strong> Roll 1d20 + Attack Bonus. Hit if total >= enemy AC.</li>
+                            <li><strong>Special Power:</strong> Use your unique power (if ready).</li>
+                            <li><strong>Enhancement:</strong> Use one active ability from leveling up.</li>
+                        </ol>
+                    </div>
+                    <div class="tip-box">
+                        <strong>Special Power: Blastwave</strong><br>
+                        Deal 1 damage to all enemies within 2 squares of you! Clear out those bad guys!
+                    </div>
+                    <div class="tip-box">
+                        <strong>Critical Hit:</strong> If you roll a natural 20 on your attack die, you deal DOUBLE damage! BOOM!
+                    </div>
+                    <div class="tip-box">
+                        <strong>Taking Damage:</strong> Cross off HP circles.
+                    </div>
+                    <div class="tip-box">
+                        <strong>Defeated (0 HP):</strong> You fall unconscious, but don't worry! You come back next round with half HP, ready to fight again!
+                    </div>
+                    <div class="tip-box">
+                        <strong>Healing:</strong> Erase crossed-off HP circles.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Wizard Character Sheet - Page 2 (Out of Combat, Inventory, Notes, Heroic Deeds) -->
+    <div class="character-sheet wizard-theme">
+        <h1 class="text-4xl font-bold text-center mb-4 text-indigo-700">
+            <span class="archetype-icon">✨</span>Mosley the Wizard - Utility & Narrative
+        </h1>
+        <p class="text-center text-gray-700 text-sm mb-8">Your skills outside of battle and your unfolding story!</p>
+
+        <div class="flex flex-col md:flex-row gap-6 flex-grow">
+            <!-- Left Column: Out of Combat Actions -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Out of Combat Actions</h2>
+                    <p class="mb-4 text-sm text-gray-700">When you're not fighting, try these ideas if you're stuck!</p>
+                    <div class="tip-box">
+                        <strong>Explore:</strong> Look around carefully for clues, hidden paths, or interesting things. (Roll 10+ for normal, 15+ for hard)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Search:</strong> Actively look for hidden items, traps, or secret doors. (Roll 10+ for normal, 15+ for hard)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Talk/Persuade:</strong> Try to convince someone, get information, or make friends. (Roleplay what you say! DM will tell you if it works.)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Investigate:</strong> Examine something closely to learn more about it. (Roll 10+ for normal, 15+ for hard)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Help/Assist:</strong> Work with a friend to make their task easier. (DM might give them a bonus!)
+                    </div>
+                    <h3 class="font-bold mt-4 mb-2 text-indigo-700">Wizard Specific Actions:</h3>
+                    <div class="tip-box">
+                        <strong>Identify Magic:</strong> Figure out what a magic item does or if something is enchanted. (DM might tell you about a magic item's power!)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Read Ancient Texts:</strong> Understand old languages or forgotten lore. (DM might give you a clue about the adventure or a monster!)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Create Light/Sound/Illusion:</strong> Use your minor magic to solve problems creatively. (Distract guards, light a dark room, make a scary sound!)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Inventory, Notes, Heroic Deeds -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <!-- Inventory & Gold -->
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Inventory & Gold</h2>
+                    <div class="stat-box">
+                        <span class="stat-label">Gold:</span>
+                        <span class="stat-value">20</span>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 min-h-[8rem] flex-grow">
+                        <p class="text-sm text-gray-600 mb-2 font-semibold">Items:</p>
+                        <ul class="list-disc list-inside text-sm text-gray-700">
+                            <li>Robes</li>
+                            <li>Spellbook</li>
+                            <li>Backpack</li>
+                            <li>1 Healing Potion</li>
+                            <li>Magic missiles (ranged weapon)</li>
+                            <!-- Add more items here -->
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Adventure Notes / Story So Far -->
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Adventure Notes / Story So Far</h2>
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 min-h-[10rem] flex-grow">
+                        <p class="text-sm text-gray-600 italic">Write down important clues, friendly faces, or what happened last!</p>
+                        <!-- Space for notes -->
+                    </div>
+                </div>
+
+                <!-- Heroic Deeds / Special Training -->
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Heroic Deeds / Special Training</h2>
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 min-h-[8rem] flex-grow">
+                        <p class="text-sm text-gray-600 italic">Record unique abilities or boons gained from your adventures!</p>
+                        <!-- Space for notes -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Wizard Character Sheet - Page 3 (Enhancements & Milestone Equipment) -->
+    <div class="character-sheet wizard-theme">
+        <h1 class="text-4xl font-bold text-center mb-4 text-indigo-700">
+            <span class="archetype-icon">✨</span>Mosley the Wizard - Enhancements & Progression
+        </h1>
+        <p class="text-center text-gray-700 text-sm mb-8">Master of arcane power and reality itself!</p>
+
+        <div class="flex flex-col md:flex-row gap-6 flex-grow">
+            <!-- Left Column: Enhancements Tier 1 & 2 -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Tier 1 Enhancements (Levels 1-5)</h2>
+                    <div class="enhancement-list">
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Shield Spell</h3>
+                            <p class="enhancement-description">Cast a magical shield that grants +3 AC until hit. Recharges after 3 rounds. Your magical defense!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Mystic Recovery</h3>
+                            <p class="enhancement-description">+1 to all your attack rolls permanently. Your magical aim becomes more precise!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Cantrip Master</h3>
+                            <p class="enhancement-description">Use minor magic effects at will (e.g., create light, make small sounds, change temperature, make objects float, conjure simple illusions). Get creative!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Spell Focus</h3>
+                            <p class="enhancement-description">+1 damage to all your magical attacks permanently. Your spells hit harder!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Magic Missile</h3>
+                            <p class="enhancement-description">Once per round, you can automatically hit one enemy for 1 damage (no attack roll needed). A reliable magical blast!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Tier 2 Enhancements (Levels 6-10)</h2>
+                    <div class="enhancement-list">
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Greater Shield</h3>
+                            <p class="enhancement-description">The Shield Spell now grants +4 AC (requires Shield Spell). Your magical defenses become even stronger!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Spell Penetration</h3>
+                            <p class="enhancement-description">Your spells ignore enemy resistances to magic (requires Mystic Recovery). No foe is truly immune to your power!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Utility Magic</h3>
+                            <p class="enhancement-description">You gain major convenience spells (e.g., fly for short distances, teleport short distance up to 3 squares, create more complex illusions). Enhance exploration and tactics!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Fireball</h3>
+                            <p class="enhancement-description">Once per adventure, you can deal 2 damage to all enemies in a 3x3 square area. A classic, devastating area-of-effect spell!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Counterspell</h3>
+                            <p class="enhancement-description">Once per adventure, you can stop an enemy's magic attack or special power. Save the party from dangerous effects!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Enhancements Tier 3 & 4, Master, Milestone Equipment -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Tier 3 Enhancements (Levels 11-15)</h2>
+                    <div class="enhancement-list">
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Master of Elements</h3>
+                            <p class="enhancement-description">+2 AC permanently, and your spells can be visually manifested as fire, ice, or lightning. More resilient and visually impressive!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Spell Mastery</h3>
+                            <p class="enhancement-description">You can cast any Tier 2 enhancement spell twice per adventure. Use your most useful spells more often!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Dimension Door</h3>
+                            <p class="enhancement-description">Once per adventure, you can teleport anywhere you can see. Incredible mobility and escape options!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Lightning Bolt</h3>
+                            <p class="enhancement-description">Once per adventure, you can deal 3 damage to all enemies in a straight line (up to 6 squares long). A powerful, piercing attack!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Time Dilation</h3>
+                            <p class="enhancement-description">Once per adventure, all allies (including you) get an extra turn. Completely turn the tide of battle!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Tier 4 Enhancements (Levels 16-19)</h2>
+                    <div class="enhancement-list">
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Archmage</h3>
+                            <p class="enhancement-description">All of your spells deal +2 damage, and you gain +4 AC permanently. A walking force of magical destruction and surprisingly tough!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Meteor</h3>
+                            <p class="enhancement-description">Once per adventure, you can call down a meteor, dealing 4 damage to all enemies in a 5x5 square area. An apocalyptic, battle-ending spell!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Wish</h3>
+                            <p class="enhancement-description">Once per adventure, you can recreate any enhancement from any class (even other heroes!). The ultimate versatile power!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Reality Warp</h3>
+                            <p class="enhancement-description">Once per adventure, you can change any die roll result (your own or an enemy's) to any number you choose. Literally rewrite fate!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Level 20 Master Enhancement: Master of Reality</h2>
+                    <p class="enhancement-description">
+                        Once per adventure, Mosley can cast <strong>THE ULTIMATE SPELL</strong> - they describe any magical effect they want, and it happens (within reason - no "I win instantly").
+                        Examples: Turn all enemies into harmless rabbits for 3 rounds, create a massive dragon made of pure magic energy to fight for them, open a portal to anywhere in the world, stop time for everyone except the heroes.
+                        Mosley becomes <strong>immune to all damage</strong> from spells and magical effects permanently.
+                        Their magic is so powerful that <strong>reality bends around them</strong> - once per turn, they can reroll ANY die roll made by anyone (including enemies) and choose which result to use.
+                    </p>
+                </div>
+
+                <!-- Milestone Equipment -->
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Milestone Equipment</h2>
+                    <p class="mb-4 text-sm text-gray-700">Your gear gets stronger as you become more legendary!</p>
+                    <div class="tip-box">
+                        <strong>Level 5: Heroic Gear</strong><br>
+                        All your weapons deal +1 damage permanently. All your armor grants +1 AC permanently.
+                    </div>
+                    <div class="tip-box">
+                        <strong>Level 10: Champion's Arsenal</strong><br>
+                        All your weapons deal an *additional* +1 damage (total +2). All your armor grants an *additional* +1 AC (total +2).
+                    </div>
+                    <div class="tip-box">
+                        <strong>Level 15: Legendary Equipment</strong><br>
+                        All your weapons deal an *additional* +1 damage (total +3). All your armor grants an *additional* +1 AC (total +3).
+                    </div>
+                    <div class="tip-box">
+                        <strong>Level 20: Artifact Mastery</strong><br>
+                        All your weapons deal an *additional* +1 damage (total +4). All your armor grants an *additional* +1 AC (total +4).
+                    </div>
+                    <p class="mt-4 text-sm text-gray-700 italic">Your DM will also give you special magical items at these levels!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

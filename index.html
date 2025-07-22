@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CRAPPING Compendium</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Merriweather', serif;
+      background: url('parchment.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: #2c1d0b;
+    }
+
+    #content {
+      background-color: rgba(250, 245, 235, 0.9);
+      max-width: 960px;
+      margin: 3rem auto;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #3a290e;
+      font-size: 2.5rem;
+      border-bottom: 4px solid #c6b28f;
+      padding-bottom: 0.2em;
+    }
+
+    h2 {
+      margin-top: 2.5rem;
+      color: #3a290e;
+      border-bottom: 2px solid #c6b28f;
+      padding-bottom: 0.1em;
+    }
+
+    h3 {
+      margin-top: 1.5rem;
+      color: #4a3a1f;
+    }
+
+    nav {
+      background-color: rgba(245, 235, 210, 0.9);
+      padding: 1rem;
+      border-bottom: 1px solid #c0b48f;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    nav li a {
+      text-decoration: none;
+      color: #4a3a1f;
+      font-weight: bold;
+    }
+
+    nav li a:hover {
+      text-decoration: underline;
+    }
+
+    ul, ol {
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      padding-left: 1.2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    th, td {
+      border: 1px solid #c0b48f;
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    th {
+      background-color: #ece2c6;
+    }
+
+    .class-links a {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #3b5b6c;
+      text-decoration: none;
+    }
+
+    .class-links a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      background-color: #f2e8d0;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #6c5d4d;
+      border-top: 1px solid #c0b48f;
+      padding-top: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <ul>
+      <li><a href="#philosophy">Philosophy</a></li>
+      <li><a href="#character-creation">Character Creation</a></li>
+      <li><a href="#classes">Hero Classes</a></li>
+      <li><a href="#leveling">Leveling</a></li>
+      <li><a href="#equipment">Equipment</a></li>
+      <li><a href="#combat">Combat</a></li>
+      <li><a href="#monsters">Monsters</a></li>
+      <li><a href="#adventures">Adventures</a></li>
+      <li><a href="#dm">DM Guidelines</a></li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <h1>🛡️ The CRAPPING Compendium</h1>
+    <p><strong>Child-Researched & Approved Pen & Paper Interactive Narrative Game</strong> — Levels 1–20</p>
+
+    <section id="philosophy">
+      <h2>🎯 Core Philosophy</h2>
+      <ul>
+        <li><strong>Simple Turns & Clear Choices</strong>: Each turn offers Move, Attack, Special Power, and Enhancement—easy to grasp and fast to play.</li>
+        <li><strong>Visual Progress</strong>: Track HP with crossed-off circles, draw maps, and mark quests in an adventure log for tangible feedback.</li>
+        <li><strong>Fast & Engaging Combat</strong>: Early fights finish in 3–6 rounds, epic bosses in up to 10—keeps energy high and decisions impactful.</li>
+        <li><strong>Clear Success & Immediate Rewards</strong>: Rolls: 10+ normal, 15+ hard, beat AC for attacks. Celebrate wins with vivid descriptions and instant treasure or story advancement.</li>
+        <li><strong>Gradual Complexity & Meaningful Choices</strong>: Introduce new abilities slowly across levels so each level-up feels rewarding without overwhelm.</li>
+        <li><strong>Kid-Friendly Features</strong>: Abilities are once-per-adventure or simple recharge. Failure leads to story twists, never dead ends.</li>
+      </ul>
+    </section>
+
+    <section id="character-creation">
+      <h2>👤 Character Creation</h2>
+      <p>Players choose one of five hero archetypes with preset stats for quick balance. Then personalize with:</p>
+      <ul>
+        <li><strong>Appearance:</strong> Height, hair style/color, eye color, special attire.</li>
+        <li><strong>Personality:</strong> Brave, cautious, silly, serious, talkative, observant.</li>
+        <li><strong>Backstory:</strong> One or two sentences: origin, favorite animal, main goal (e.g., “find lost treasure”).</li>
+        <li><strong>Favorites:</strong> Color, food, pet—small details make characters memorable.</li>
+      </ul>
+
+      <h3>Starting Character Stats (Level 1)</h3>
+      <table>
+        <tr>
+          <th>Class</th><th>Hero Name</th><th>HP</th><th>AC</th><th>Speed</th><th>Attack</th>
+          <th>Weapon</th><th>Gear</th><th>Special Power</th>
+        </tr>
+        <tr>
+          <td>Fighter</td><td>Schmitt</td><td>6</td><td>13</td><td>5</td><td>+4</td>
+          <td>Longsword (1)</td><td>Chain mail, Shield</td><td>Charge: +2 damage</td>
+        </tr>
+        <tr>
+          <td>Barbarian</td><td>Drago</td><td>7</td><td>9</td><td>5</td><td>+5</td>
+          <td>Greataxe (1)</td><td>Leather armor, Rage totem</td><td>Counterattack when hit</td>
+        </tr>
+        <tr>
+          <td>Rogue</td><td>Mileena</td><td>3</td><td>11</td><td>6</td><td>+6</td>
+          <td>Short sword (1)</td><td>Leather armor, Thieves’ tools</td><td>Sneak Attack +2</td>
+        </tr>
+        <tr>
+          <td>Shaman</td><td>Zug</td><td>6</td><td>10</td><td>5</td><td>+3</td>
+          <td>Spirit staff (1)</td><td>Robes, Medicine pouch</td><td>Spectral Shackles</td>
+        </tr>
+        <tr>
+          <td>Wizard</td><td>Mosley</td><td>4</td><td>7</td><td>4</td><td>+7</td>
+          <td>Magic Missile (1)</td><td>Robes, Spellbook</td><td>Blastwave AoE</td>
+        </tr>
+      </table>
+
+      <h3>Equipment Notes</h3>
+      <ul>
+        <li>All weapons deal 1 damage at start.</li>
+        <li>Everyone gets backpack, 20 gold, one healing potion (2 HP).</li>
+        <li>Armor explains AC, gear grants utility (lockpicks, healing pouch, spellbook).</li>
+      </ul>
+
+      <h3>Design Notes</h3>
+      <ul>
+        <li>High HP = low AC (Barbarian/Fighter). High AC = low HP (Rogue/Wizard).</li>
+        <li>Attack bonuses balance fragility: Wizard +7, Rogue/Barbarian +5, Fighter +4, Shaman +3.</li>
+        <li>Special powers fill tactical niches: control, burst, support, crowd clear, AoE.</li>
+      </ul>
+    </section>
+
+    <section id="classes">
+      <h2>🧙‍♀️ Hero Classes</h2>
+      <div class="class-links">
+        <!-- ← This is where you insert your sheet links ↓ -->
+        <a href="fighter.html">⚔️ Schmitt the Fighter</a>
+        <a href="barbarian.html">🪓 Drago the Barbarian</a>
+        <a href="rogue.html">🗡️ Mileena the Rogue</a>
+        <a href="shaman.html">🌿 Zug the Shaman</a>
+        <a href="wizard.html">📘 Mosley the Wizard</a>
+      </div>
+    </section>
+
+    <section id="leveling">
+      <h2>📈 Experience & Leveling</h2>
+
+      <h3>Tracking Experience</h3>
+      <p>No messy XP: mark off completed adventures. Hit the “Adventures Needed” threshold to level up.</p>
+
+      <h3>Adventures Required Per Level</h3>
+      <table>
+        <tr><th>Level</th><th>Needed</th><th>Total</th></tr>
+        <tr><td>1→2</td><td>2</td><td>2</td></tr>
+        <tr><td>2→3</td><td>2</td><td>4</td></tr>
+        <tr><td>3→4</td><td>3</td><td>7</td></tr>
+        <tr><td>4→5</td><td>3</td><td>10</td></tr>
+        <tr><td>5→6</td><td>4</td><td>14</td></tr>
+        <tr><td>6→7</td><td>4</td><td>18</td></tr>
+        <tr><td>7→8</td><td>4</td><td>22</td></tr>
+        <tr><td>8→9</td><td>4</td><td>26</td></tr>
+        <tr><td>9→10</td><td>5</td><td>31</td></tr>
+        <tr><td>10→11</td><td>5</td><td>36</td></tr>
+        <tr><td>11→12</td><td>5</td><td>41</td></tr>
+        <tr><td>12→13</td><td>5</td><td>46</td></tr>
+        <tr><td>13→14</td><td>6</td><td>52</td></tr>
+        <tr><td>14→15</td><td>6</td><td>58</td></tr>
+        <tr><td>15→16</td><td>6</td><td>64</td></tr>
+        <tr><td>16→17</td><td>6</td><td>70</td></tr>
+        <tr><td>17→18</td><td>7</td><td>77</td></tr>
+        <tr><td>18→19</td><td>7</td><td>84</td></tr>
+        <tr><td>19→20</td><td>8</td><td>92</td></tr>
+      </table>
+
+      <h3>Milestone Rewards</h3>
+      <ul>
+        <li><strong>Level 5:</strong> Hero of the Village—first major power boost: unique enhancement or minor artifact.</li>
+        <li><strong>Level 10:</strong> Champion of the Realm—unlock once-per-adventure epic ability or powerful enhancement tier.</li>
+        <li><strong>Level 15:</strong> Legend of the Age—grant legendary powers that bend rules or artifacts of great power.</li>
+        <li><strong>Level 20:</strong> Master of Destiny—ultimate abilities: face gods, avert cosmic threats, shape reality.</li>
+      </ul>
+
+      <h3>Universal Level Benefits</h3>
+      <ul>
+        <li><strong>Levels 1–4:</strong> +1 HP & one Tier 1 Enhancement each level.</li>
+        <li><strong>Levels 5–9:</strong> +1 HP, one Enhancement, Attack Bonus +1 at levels 5, 7, 9.</li>
+        <li><strong>Levels 10–14:</strong> +2 HP, one Enhancement, Attack Bonus +1 at levels 11, 13.</li>
+        <li><strong>Levels 15–19:</strong> +2 HP, one Enhancement, Attack Bonus +1 every level.</li>
+        <li><strong>Level 20:</strong> +3 HP, Master Enhancement, +1 Attack Bonus.</li>
+      </ul>
+
+      <h3>Maximum HP by Level</h3>
+      <table>
+        <tr>
+          <th>Lv</th><th>Schmitt</th><th>Drago</th><th>Mileena</th><th>Mosley</th><th>Zug</th>
+        </tr>
+        <!-- Abbreviated for brevity; include rows 1–20 as in your Markdown -->
+        <tr><td>1</td><td>6</td><td>7</td><td>3</td><td>4</td><td>6</td></tr>
+        <tr><td>2</td><td>7</td><td>8</td><td>4</td><td>5</td><td>7</td></tr>
+        <!-- … continue through level 20 … -->
+        <tr><td>20</td><td>37</td><td>38</td><td>34</td><td>35</td><td>37</td></tr>
+      </table>
+    </section>
+
+    <section id="equipment">
+      <h2>🧰 Equipment System</h2>
+
+      <h3>Introducing Equipment</h3>
+      <ul>
+        <li>Found in treasure hoards or rewarded by NPCs for heroic deeds.</li>
+        <li>Quest rewards: milestone-based magic items—no mundane inventory tracking.</li>
+      </ul>
+
+      <h3>Milestone Equipment</h3>
+      <ul>
+        <li><strong>Level 5 – Heroic Gear:</strong>
+          <ul>
+            <li>Weapons +1 damage</li>
+            <li>Armor +1 AC</li>
+            <li>Minor magic trinkets (ever-burning torch, whispering cloak).</li>
+          </ul>
+        </li>
+        <li><strong>Level 10 – Champion’s Arsenal:</strong>
+          <ul>
+            <li>Weapons +2 damage total</li>
+            <li>Armor +2 AC total</li>
+            <li>Moderate items (Boots of Wind Walker, Ring of Protection, Bag of Holding).</li>
+          </ul>
+        </li>
+        <li><strong>Level 15 – Legendary Equipment:</strong>
+          <ul>
+            <li>Weapons +3 damage total</li>
+            <li>Armor +3 AC total</li>
+            <li>Major artifacts (Stormbringer Sword, Dragonscale Armor).</li>
+          </ul>
+        </li>
+        <li><strong>Level 20 – Artifact Mastery:</strong>
+          <ul>
+            <li>Weapons +4 damage total</li>
+            <li>Armor +4 AC total</li>
+            <li>Reality-bending artifacts (Crown of the Archons, Staff of Elemental Command).</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>Sample Legendary Items</h3>
+      <ul>
+        <li><strong>Stormbringer Sword (Lv 15):</strong> +3 damage, lightning on crit (1 AoE).</li>
+        <li><strong>Dragonscale Armor (Lv 15):</strong> +3 AC, immunity to fire.</li>
+        <li><strong>Boots of the Wind Walker (Lv 10):</strong> +2 Speed, walk on air 1 round.</li>
+        <li><strong>Crown of the Archons (Lv 20):</strong> +2 all rolls, command lesser creatures once per encounter.</li>
+      </ul>
+    </section>
+
+    <section id="combat">
+      <h2>⚔️ Simplified Combat Rules</h2>
+
+      <h3>Basic Turn Structure</h3>
+      <ol>
+        <li><strong>Move</strong>: Up to Speed in squares. Diagonals = 1 square. Difficult terrain = 2 squares per move.</li>
+        <li><strong>Attack</strong>: Roll 1d20 + Attack Bonus vs AC. Describe hits or creative misses.</li>
+        <li><strong>Special Power</strong>: Use your class’s unique ability (once/turn or once/adventure as noted).</li>
+        <li><strong>Enhancement</strong>: Use one active ability from your level-up choices.</li>
+      </ol>
+
+      <h3>Easy Success Numbers</h3>
+      <ul>
+        <li>Normal Task: Roll 10+ on 1d20.</li>
+        <li>Hard Task: Roll 15+ on 1d20.</li>
+        <li>Attack: 1d20 + Attack Bonus vs AC.</li>
+        <li>Natural 20: Critical hit = double damage.</li>
+      </ul>
+
+      <h3>Damage & Healing</h3>
+      <ul>
+        <li>Track HP as circles; cross off when damaged.</li>
+        <li>At 0 HP, hero is defeated (unconscious) but returns next round at half HP.</li>
+        <li>Healing: potions, abilities, or spirit magic restore crossed-off HP circles.</li>
+      </ul>
+    </section>
+
+    <section id="monsters">
+      <h2>👹 Monsters & Scaling</h2>
+
+      <h3>Monster Creation Checklist</h3>
+      <ul>
+        <li>AC between 8–15</li>
+        <li>HP based on role: Minion, Standard, Elite, Boss</li>
+        <li>One simple attack descriptive name</li>
+        <li>One fun special ability (no long cooldowns)</li>
+        <li>Vivid description kids can picture</li>
+      </ul>
+
+      <h3>Quick Monster Templates (Lv 1–4)</h3>
+      <ul>
+        <li><strong>Swarm (Giant Rat, Spider Swarm)</strong>: AC 10, HP 4–8, Speed 6, Swarm attack 1 damage, retaliate 1 damage when hit.</li>
+        <li><strong>Brute (Ogre, Troll)</strong>: AC 12, HP 6–10, Speed 4, Smash +2, 1 damage, Knock Down on hit.</li>
+        <li><strong>Sneaky (Goblin, Kobold)</strong>: AC 14, HP 3–5, Speed 6, Surprise Strike +4, 1 damage, Vanish 4 squares after attack.</li>
+        <li><strong>Spellcaster (Cultist, Goblin Shaman)</strong>: AC 8, HP 4–6, Speed 4, Magic Bolt +3, 1 damage, Shield +4 AC until next turn.</li>
+      </ul>
+
+      <h3>Monster Scaling for High-Level Play</h3>
+      <ul>
+        <li>Levels 5–9: +2 HP, +1 AC, +1 attack bonus</li>
+        <li>Levels 10–14: +4 HP, +2 AC, +2 attack bonus, +1 special power</li>
+        <li>Levels 15–19: +6 HP, +3 AC, +3 attack bonus, +2 special powers</li>
+        <li>Level 20: +8 HP, +4 AC, +4 attack bonus, +3 special powers</li>
+      </ul>
+
+      <h3>Sample Monster Conversions</h3>
+      <ul>
+        <li><strong>Goblin</strong>: AC 12, HP 2, Speed 5, Scimitar +1, 1 damage, Pack Tactics +2 if an ally adjacent.</li>
+        <li><strong>Owlbear</strong>: AC 13, HP 8, Speed 7, Claws +3, 1 damage, Bear Hug knocks enemy down.</li>
+      </ul>
+
+      <h3>Epic Monster Templates</h3>
+      <ul>
+        <li><strong>Demon Lord (Lv 15)</strong>: HP 26, AC 19, +13 to hit, 2 damage + burning, Teleport, Summon Minions, Demonic Glare.</li>
+        <li><strong>Ancient Dragon (Lv 20)</strong>: HP 33, AC 22, +16 to hit, 3 damage, Breath Weapon AoE 4x4, Wing Buffet, Frightful Presence, Legendary Resistance.</li>
+      </ul>
+    </section>
+
+    <section id="adventures">
+      <h2>🗺️ Adventures & Campaign Structure</h2>
+
+      <h3>Narrative Simplification</h3>
+      <ul>
+        <li>Clear Motivation: “Save the village,” “find treasure,” “stop the villain.”</li>
+        <li>Visible Progress: Use maps/tokens and mark objectives.</li>
+        <li>Session Length: 45–60 min early, up to 120 min at high levels.</li>
+        <li>Immediate Stakes: Each scene drives the story forward.</li>
+      </ul>
+
+      <h3>Scene-by-Scene Conversion</h3>
+      <ul>
+        <li><strong>Exploration</strong>: Roll 10+ or 15+, failure becomes fun complication.</li>
+        <li><strong>Social</strong>: Roleplay over rolls, clear friendly/hostile NPCs.</li>
+        <li><strong>Puzzles/Traps</strong>: Visual props, multiple solutions, obvious hints if stuck.</li>
+      </ul>
+
+      <h3>Example: “Goblin Ambush”</h3>
+      <ul>
+        <li>Start with 2 goblins, add 1 more when one falls.</li>
+        <li>Simple clearing map, 4–6 rounds of combat.</li>
+        <li>Victory: defeat goblins and rescue captive merchant.</li>
+      </ul>
+
+      <h3>Example Adventures</h3>
+      <ul>
+        <li><strong>Lost Mine → Goblin Cave Rescue</strong>: Kidnap, trail, 3 encounters, hero reward.</li>
+        <li><strong>Dragon of Icespire → The Scary Dragon</strong>: Livestock raids, investigation, mountain climb, dragon fight.</li>
+      </ul>
+
+      <h3>Campaign Arcs by Level</h3>
+      <ul>
+        <li><strong>1–5:</strong> Village Heroes—local threats, small maps.</li>
+        <li><strong>6–10:</strong> Regional Champions—kingdom-scale, politics, ruins.</li>
+        <li><strong>11–15:</strong> Continental Legends—demon invasions, planar glimpses.</li>
+        <li><strong>16–20:</strong> World Shapers—gods, reality tears, multidimensional stakes.</li>
+      </ul>
+
+      <h3>Session Pacing</h3>
+      <ul>
+        <li>Levels 1–5: 45–60 min sessions</li>
+        <li>Levels 6–15: 60–90 min sessions</li>
+        <li>Levels 16–20: 90–120 min epic sessions</li>
+      </ul>
+    </section>
+
+    <section id="dm">
+      <h2>🎤 DM Guidelines</h2>
+
+      <h3>Managing the Table</h3>
+      <ul>
+        <li>Clear turn order: index cards or clockwise announcements.</li>
+        <li>Encourage creativity: ask “How?” not just “What?”</li>
+        <li>Keep energy high: voices, cheers, dynamic descriptions.</li>
+        <li>Quick rulings: Fair ruling on the spot, look up details later.</li>
+      </ul>
+
+      <h3>When Things Go Wrong</h3>
+      <ul>
+        <li>Too easy? Add reinforcements or dramatic twists.</li>
+        <li>Too hard? Enemies flee, trip, or unexpected allies arrive.</li>
+        <li>Players stuck? Give obvious hints after 1–2 minutes.</li>
+        <li>Defeated heroes return next round at half HP—fun, not frustration.</li>
+      </ul>
+
+      <h3>Success Measurements</h3>
+      <ul>
+        <li>Players engaged and ask questions.</li>
+        <li>Combats end in under 10 rounds.</li>
+        <li>Everyone uses their special power.</li>
+        <li>Story advances every 15 minutes.</li>
+        <li>Players exclaim, “That was awesome!”</li>
+      </ul>
+
+      <h3>Managing Complexity</h3>
+      <ul>
+        <li>Introduce one new mechanic per level.</li>
+        <li>Use reference cards for complex abilities.</li>
+        <li>Let players specialize in a few powers.</li>
+        <li>Keep core resolution: 1d20 + bonus vs target number.</li>
+      </ul>
+
+      <h3>Keeping It Kid-Friendly</h3>
+      <ul>
+        <li>Power fantasy: describe epic new abilities.</li>
+        <li>Failure = plot twist, never dead end.</li>
+        <li>Celebrate level-ups, milestones, loot ceremonies.</li>
+        <li>Visual progression: character sheets, hall of heroes board.</li>
+      </ul>
+
+      <h3>Long-Term Campaign Tips</h3>
+      <ul>
+        <li>Document adventures in a shared log or journal.</li>
+        <li>Recurring NPCs who evolve with heroes’ reputations.</li>
+        <li>Bards and statues commemorate epic deeds.</li>
+        <li>At retirement, heroes guide new adventurers or rule realms.</li>
+      </ul>
+
+      <h3>Quick Reference Cards</h3>
+      <h4>For Players: “Your Turn!”</h4>
+      <ol>
+        <li>Move: up to Speed.</li>
+        <li>Attack: 1d20 + Attack Bonus vs AC.</li>
+        <li>Special Power: use if ready.</li>
+        <li>Enhancement: unleash a level-gain ability.</li>
+      </ol>
+
+      <h4>For DM: “Make It Epic!”</h4>
+      <ul>
+        <li>Describe hits: vivid, dynamic narration.</li>
+        <li>Make misses fun: creative fumbles that aid story.</li>
+        <li>Encourage teamwork: spotlight every hero.</li>
+        <li>End on cliffhangers: tease the next epic twist.</li>
+      </ul>
+    </section>
+
+    <footer>
+      Made with 🛡️ by adventurers, for adventurers. CRAPPING Compendium v1.0
+    </footer>
+  </div>
+</body>
+</html>

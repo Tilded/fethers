@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zug the Shaman Character Sheet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .page-break {
+            page-break-after: always;
+        }
+        .character-sheet {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 8.5in; /* Standard letter width for printing */
+            min-height: 11in; /* Standard letter height for printing */
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            /* Ensure content doesn't break across pages */
+            break-inside: avoid;
+        }
+        .section-header {
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 2px solid;
+        }
+        .hp-circle {
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #666;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #666;
+            flex-shrink: 0; /* Prevent circles from shrinking */
+        }
+        .hp-circle.filled {
+            background-color: #ef4444; /* Red for lost HP */
+            border-color: #dc2626;
+            color: #fff;
+        }
+        .stat-box {
+            background-color: #f8f8f8;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+        }
+        .stat-label {
+            font-weight: 700;
+            color: #4a4a4a;
+        }
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: #1a1a1a;
+        }
+        .enhancement-item {
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .enhancement-item:last-child {
+            border-bottom: none;
+        }
+        .enhancement-title {
+            font-weight: 700;
+            color: #333;
+        }
+        .enhancement-description {
+            font-size: 0.875rem;
+            color: #555;
+        }
+        .tip-box {
+            background-color: #f0fdf4; /* Light green for shaman theme */
+            border-left: 4px solid #047857; /* Darker green border */
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .tip-box strong {
+            color: #059669; /* Darker green for bold text in tip boxes */
+            font-weight: 700;
+        }
+        .archetype-icon {
+            display: inline-block;
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        /* Specific styles for shaman theme */
+        .shaman-theme .section-header { border-color: #047857; color: #047857; }
+        .shaman-theme .hp-circle { border-color: #047857; color: #047857; }
+        .shaman-theme .hp-circle.filled { background-color: #047857; border-color: #064e3b; }
+        .shaman-theme .stat-label { color: #047857; }
+
+        /* Print-specific styles */
+        @media print {
+            body {
+                background-color: #fff;
+            }
+            .character-sheet {
+                box-shadow: none;
+                border: 1px solid #ccc; /* Add a subtle border for print */
+                margin: 0.5in auto; /* Adjust margins for print */
+            }
+            .page-break {
+                page-break-after: always;
+            }
+            /* Ensure sections don't break across pages */
+            .character-sheet > div {
+                break-inside: avoid;
+            }
+            .section-content {
+                break-inside: avoid;
+            }
+            .enhancement-list {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Shaman Character Sheet - Page 1 -->
+    <div class="character-sheet shaman-theme">
+        <h1 class="text-4xl font-bold text-center mb-4 text-teal-700">
+            <span class="archetype-icon">🌿</span>Zug the Shaman
+        </h1>
+        <p class="text-center text-gray-600 mb-2 italic">"The spirits guide my hand, and nature protects my friends!"</p>
+        <p class="text-center text-gray-700 text-sm mb-8">A wise conduit of nature's power, healing and empowering allies.</p>
+
+        <div class="flex flex-col md:flex-row gap-6 flex-grow">
+            <!-- Left Column: Character Info & Stats -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <!-- Hero Details -->
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Hero Details</h2>
+                    <div class="stat-box">
+                        <span class="stat-label">Name:</span>
+                        <span class="stat-value">Zug</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Class:</span>
+                        <span class="stat-value">Shaman</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Level:</span>
+                        <span class="stat-value">1</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Basic Weapon:</span>
+                        <span class="stat-value">Spirit staff (1 damage)</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Starting Gear:</span>
+                        <span class="stat-value">Robes, Medicine pouch, Backpack, 20 Gold, 1 Healing Potion</span>
+                    </div>
+                </div>
+
+                <!-- HP & Stats -->
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Health & Stats</h2>
+                    <div class="stat-box">
+                        <span class="stat-label">Hit Points (HP):</span>
+                        <div class="flex flex-wrap justify-end">
+                            <!-- Max HP for Shaman at Level 20 is 37. Adding a few extra for enhancements. -->
+                            <div class="hp-circle">1</div><div class="hp-circle">2</div><div class="hp-circle">3</div><div class="hp-circle">4</div><div class="hp-circle">5</div><div class="hp-circle">6</div><div class="hp-circle">7</div><div class="hp-circle">8</div><div class="hp-circle">9</div><div class="hp-circle">10</div><div class="hp-circle">11</div><div class="hp-circle">12</div><div class="hp-circle">13</div><div class="hp-circle">14</div><div class="hp-circle">15</div><div class="hp-circle">16</div><div class="hp-circle">17</div><div class="hp-circle">18</div><div class="hp-circle">19</div><div class="hp-circle">20</div><div class="hp-circle">21</div><div class="hp-circle">22</div><div class="hp-circle">23</div><div class="hp-circle">24</div><div class="hp-circle">25</div><div class="hp-circle">26</div><div class="hp-circle">27</div><div class="hp-circle">28</div><div class="hp-circle">29</div><div class="hp-circle">30</div><div class="hp-circle">31</div><div class="hp-circle">32</div><div class="hp-circle">33</div><div class="hp-circle">34</div><div class="hp-circle">35</div><div class="hp-circle">36</div><div class="hp-circle">37</div><div class="hp-circle"></div><div class="hp-circle"></div><div class="hp-circle"></div>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Armor Class (AC):</span>
+                        <span class="stat-value">10</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Speed:</span>
+                        <span class="stat-value">5 squares</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Attack Bonus:</span>
+                        <span class="stat-value">+3</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Combat Quick Reference -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <!-- Combat Quick Reference -->
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Combat Quick Reference</h2>
+                    <div class="tip-box">
+                        <strong>Your Turn:</strong>
+                        <ol class="list-decimal list-inside ml-2">
+                            <li><strong>Move:</strong> Up to your Speed (count squares).</li>
+                            <li><strong>Attack:</strong> Roll 1d20 + Attack Bonus. Hit if total >= enemy AC.</li>
+                            <li><strong>Special Power:</strong> Use your unique power (if ready).</li>
+                            <li><strong>Enhancement:</strong> Use one active ability from leveling up.</li>
+                        </ol>
+                    </div>
+                    <div class="tip-box">
+                        <strong>Special Power: Spectral Shackles</strong><br>
+                        Stop an enemy's movement! Roll 12+ to hit. If you hit, they can't move on their next turn!
+                    </div>
+                    <div class="tip-box">
+                        <strong>Critical Hit:</strong> If you roll a natural 20 on your attack die, you deal DOUBLE damage! BOOM!
+                    </div>
+                    <div class="tip-box">
+                        <strong>Taking Damage:</strong> Cross off HP circles.
+                    </div>
+                    <div class="tip-box">
+                        <strong>Defeated (0 HP):</strong> You fall unconscious, but don't worry! You come back next round with half HP, ready to fight again!
+                    </div>
+                    <div class="tip-box">
+                        <strong>Healing:</strong> Erase crossed-off HP circles.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Shaman Character Sheet - Page 2 (Out of Combat, Inventory, Notes, Heroic Deeds) -->
+    <div class="character-sheet shaman-theme">
+        <h1 class="text-4xl font-bold text-center mb-4 text-teal-700">
+            <span class="archetype-icon">🌿</span>Zug the Shaman - Utility & Narrative
+        </h1>
+        <p class="text-center text-gray-700 text-sm mb-8">Your skills outside of battle and your unfolding story!</p>
+
+        <div class="flex flex-col md:flex-row gap-6 flex-grow">
+            <!-- Left Column: Out of Combat Actions -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Out of Combat Actions</h2>
+                    <p class="mb-4 text-sm text-gray-700">When you're not fighting, try these ideas if you're stuck!</p>
+                    <div class="tip-box">
+                        <strong>Explore:</strong> Look around carefully for clues, hidden paths, or interesting things. (Roll 10+ for normal, 15+ for hard)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Search:</strong> Actively look for hidden items, traps, or secret doors. (Roll 10+ for normal, 15+ for hard)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Talk/Persuade:</strong> Try to convince someone, get information, or make friends. (Roleplay what you say! DM will tell you if it works.)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Investigate:</strong> Examine something closely to learn more about it. (Roll 10+ for normal, 15+ for hard)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Help/Assist:</strong> Work with a friend to make their task easier. (DM might give them a bonus!)
+                    </div>
+                    <h3 class="font-bold mt-4 mb-2 text-teal-700">Shaman Specific Actions:</h3>
+                    <div class="tip-box">
+                        <strong>Heal Wounds:</strong> Use your medicine pouch to heal allies between fights. (DM might let you restore 1 HP to an ally!)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Commune with Nature:</strong> Talk to animals or understand the whispers of the forest. (DM might give you information about the area or a hint!)
+                    </div>
+                    <div class="tip-box">
+                        <strong>Cleanse:</strong> Remove minor curses or sickness. (DM might remove a negative condition!)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Inventory, Notes, Heroic Deeds -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <!-- Inventory & Gold -->
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Inventory & Gold</h2>
+                    <div class="stat-box">
+                        <span class="stat-label">Gold:</span>
+                        <span class="stat-value">20</span>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 min-h-[8rem] flex-grow">
+                        <p class="text-sm text-gray-600 mb-2 font-semibold">Items:</p>
+                        <ul class="list-disc list-inside text-sm text-gray-700">
+                            <li>Robes</li>
+                            <li>Medicine pouch</li>
+                            <li>Backpack</li>
+                            <li>1 Healing Potion</li>
+                            <li>Spirit staff</li>
+                            <!-- Add more items here -->
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Adventure Notes / Story So Far -->
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Adventure Notes / Story So Far</h2>
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 min-h-[10rem] flex-grow">
+                        <p class="text-sm text-gray-600 italic">Write down important clues, friendly faces, or what happened last!</p>
+                        <!-- Space for notes -->
+                    </div>
+                </div>
+
+                <!-- Heroic Deeds / Special Training -->
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Heroic Deeds / Special Training</h2>
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 min-h-[8rem] flex-grow">
+                        <p class="text-sm text-gray-600 italic">Record unique abilities or boons gained from your adventures!</p>
+                        <!-- Space for notes -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Shaman Character Sheet - Page 3 (Enhancements & Milestone Equipment) -->
+    <div class="character-sheet shaman-theme">
+        <h1 class="text-4xl font-bold text-center mb-4 text-teal-700">
+            <span class="archetype-icon">🌿</span>Zug the Shaman - Enhancements & Progression
+        </h1>
+        <p class="text-center text-gray-700 text-sm mb-8">Healer and master of spirits!</p>
+
+        <div class="flex flex-col md:flex-row gap-6 flex-grow">
+            <!-- Left Column: Enhancements Tier 1 & 2 -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Tier 1 Enhancements (Levels 1-5)</h2>
+                    <div class="enhancement-list">
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Nature's Ally</h3>
+                            <p class="enhancement-description">+1 AC permanently when you are outdoors. Nature protects you!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Ancestor's Wisdom</h3>
+                            <p class="enhancement-description">+1 to all your attack rolls permanently. The spirits guide your aim!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Healing Spirits</h3>
+                            <p class="enhancement-description">Once per adventure, you can heal 2 HP to any ally. A vital healing touch!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Animal Friend</h3>
+                            <p class="enhancement-description">Once per adventure, you can summon a helpful animal (like a loyal wolf!) for one encounter. It has 3 HP, 10 AC, and attacks for 1 damage.</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Spirit Shield</h3>
+                            <p class="enhancement-description">Once per adventure, you can gain +2 AC for one round. A quick burst of defense!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Tier 2 Enhancements (Levels 6-10)</h2>
+                    <div class="enhancement-list">
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Bark Skin</h3>
+                            <p class="enhancement-description">+1 AC permanently anywhere (requires Nature's Ally, for a total of +2 AC outdoors, +1 AC indoors). Your skin becomes tougher, like tree bark!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Spirit Guide</h3>
+                            <p class="enhancement-description">Once per round, you can reroll any attack roll (your own or an ally's) (requires Ancestor's Wisdom). The spirits offer a second chance!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Greater Healing</h3>
+                            <p class="enhancement-description">Once per adventure, you can heal 4 HP to any ally (requires Healing Spirits). A more powerful healing touch!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Beast Form</h3>
+                            <p class="enhancement-description">Once per adventure, you can transform into an animal (e.g., a powerful bear) for one encounter. Gain the animal's HP, AC, Speed, and attack for versatile combat!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Spectral Army</h3>
+                            <p class="enhancement-description">Once per adventure, you can summon 3 spirit warriors for one fight (1 HP, 10 AC, 1 damage each). Overwhelm enemies with numbers!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Enhancements Tier 3 & 4, Master, Milestone Equipment -->
+            <div class="md:w-1/2 flex flex-col gap-6 flex-grow">
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Tier 3 Enhancements (Levels 11-15)</h2>
+                    <div class="enhancement-list">
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">One with Nature</h3>
+                            <p class="enhancement-description">When outdoors, you heal 1 HP at the start of each of your turns. The natural world constantly rejuvenates you!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Ancestral Champion</h3>
+                            <p class="enhancement-description">Once per adventure, you can get +5 to all your attack rolls and skill checks for 3 rounds. The power of your ancestors flows through you!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Mass Healing</h3>
+                            <p class="enhancement-description">Once per adventure, you can heal all allies within 3 squares for 3 HP. A powerful group heal for tough fights!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Elemental Control</h3>
+                            <p class="enhancement-description">You can command fire, water, earth, or air in dramatic ways (e.g., create a wall of fire, summon a geyser). Powerful utility spells!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Spirit Walker</h3>
+                            <p class="enhancement-description">Once per adventure, you can become incorporeal for one round (move through objects, ignore physical attacks). Untouchable and able to pass through barriers!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Tier 4 Enhancements (Levels 16-19)</h2>
+                    <div class="enhancement-list">
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Avatar of Nature</h3>
+                            <p class="enhancement-description">Once per adventure, you can gain flight, +3 AC, and +3 damage to your attacks for 5 rounds. A powerful, soaring force of nature!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Master Healer</h3>
+                            <p class="enhancement-description">Once per adventure, you can heal any ally to full HP. Turn the tide of the most desperate battles!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Planar Ally</h3>
+                            <p class="enhancement-description">Once per adventure, you can summon a powerful spirit (e.g., an elemental, a nature giant) that fights for the entire encounter. A formidable companion!</p>
+                        </div>
+                        <div class="enhancement-item">
+                            <h3 class="enhancement-title">Reincarnation</h3>
+                            <p class="enhancement-description">Once per adventure, you can bring a defeated ally back to life with half HP. Even death is not the end when you are present!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-content break-inside-avoid">
+                    <h2 class="section-header">Level 20 Master Enhancement: World-Shaper</h2>
+                    <p class="enhancement-description">
+                        Once per adventure, Zug can <strong>completely reshape the battlefield</strong> - create walls, chasms, rivers, or even floating platforms.
+                        They can <strong>summon a Legendary Spirit Beast</strong> (like a giant ethereal wolf or cosmic eagle) that fights alongside the party for the entire adventure.
+                        Zug gains <strong>command over weather</strong> - can call down lightning (3 damage to any enemy), create healing rain (+2 HP to all allies per turn), or summon protective mists (+2 AC to everyone).
+                        Most amazingly, Zug can <strong>bring back ANY defeated ally as a spirit warrior</strong> - they return with full HP and gain ghostly powers (can fly and phase through walls).
+                    </p>
+                </div>
+
+                <!-- Milestone Equipment -->
+                <div class="section-content break-inside-avoid flex-grow">
+                    <h2 class="section-header">Milestone Equipment</h2>
+                    <p class="mb-4 text-sm text-gray-700">Your gear gets stronger as you become more legendary!</p>
+                    <div class="tip-box">
+                        <strong>Level 5: Heroic Gear</strong><br>
+                        All your weapons deal +1 damage permanently. All your armor grants +1 AC permanently.
+                    </div>
+                    <div class="tip-box">
+                        <strong>Level 10: Champion's Arsenal</strong><br>
+                        All your weapons deal an *additional* +1 damage (total +2). All your armor grants an *additional* +1 AC (total +2).
+                    </div>
+                    <div class="tip-box">
+                        <strong>Level 15: Legendary Equipment</strong><br>
+                        All your weapons deal an *additional* +1 damage (total +3). All your armor grants an *additional* +1 AC (total +3).
+                    </div>
+                    <div class="tip-box">
+                        <strong>Level 20: Artifact Mastery</strong><br>
+                        All your weapons deal an *additional* +1 damage (total +4). All your armor grants an *additional* +1 AC (total +4).
+                    </div>
+                    <p class="mt-4 text-sm text-gray-700 italic">Your DM will also give you special magical items at these levels!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
